@@ -16,15 +16,26 @@ public class LoginResp extends BaseRespMsg {
 
 
     public class Result {
-        User myUser;
-        String token;
+        User data;
+        private int status;
+        private String message;
 
-        public User getMyUser() {
-            return myUser;
+        public User getData() {
+            return data;
         }
 
-        public String getToken() {
-            return token;
+//        public String getToken() {
+//            return token;
+//        }
+
+        public int getStatus() {
+            return status;
         }
+
+        public String getMessage() {
+            return message;
+        }
+
+
     }
 }

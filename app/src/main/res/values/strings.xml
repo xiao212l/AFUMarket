@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">GoGo</string>
+    <string name="app_name">DogEggMarket</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
     <string name="home">主页</string>
-    <string name="hot">会员店</string>
+    <string name="hot">商品</string>
     <string name="catagory">商圈</string>
     <string name="cart">购物车</string>
     <string name="mine">我的</string>

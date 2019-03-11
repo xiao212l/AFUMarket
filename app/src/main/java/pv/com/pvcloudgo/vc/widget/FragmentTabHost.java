@@ -297,7 +297,7 @@ public class FragmentTabHost extends TabHost implements
         // We are now ready to go. Make sure we are switched to the
         // correct tab.
         mAttached = true;
-        ft = doTabChanged(currentTab, ft);
+          ft = doTabChanged(currentTab, ft);
         if (ft != null) {
             ft.commitAllowingStateLoss();
             mFragmentManager.executePendingTransactions();

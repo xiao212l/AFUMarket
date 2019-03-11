@@ -17,6 +17,7 @@ import butterknife.Bind;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.model.bean.CRoot2;
 import pv.com.pvcloudgo.model.bean.Category;
+import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.adapter.CategoryAdapter;
 import pv.com.pvcloudgo.vc.adapter.CategoryThingsAdapter;
 import pv.com.pvcloudgo.vc.adapter.decoration.DividerItemDecoration;
@@ -44,6 +45,9 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mPresenter = new CategoryPresenter(this, getActivity());
+
+        ToastUtils.show(getActivity(), "敬请期待！");
+
         return inflater.inflate(R.layout.fragment_category, container, false);
     }
 //    @Override

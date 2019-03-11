@@ -1,5 +1,6 @@
 package pv.com.pvcloudgo.vc.view.ui.activity.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -46,6 +47,7 @@ public class OrderActivity extends BaseActivity {
     CommonTabLayout mCommonTabLayout;
     @Bind(R.id.viewpager)
     ViewPager mViewPager;
+    int position;
 
 
     private ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -61,6 +63,8 @@ public class OrderActivity extends BaseActivity {
         setContentView(R.layout.activity_order);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        position = intent.getIntExtra("position",0);
 
         initToolBar();
         initTab();
@@ -138,9 +142,12 @@ public class OrderActivity extends BaseActivity {
             mFragments.add(new OrderFragment());
         }
 
-        for (int i = 0; i < mTitles.length; i++) {
-            mTabEntities.add(new TabEntity(mTitles[i], 0, 0));
-        }
+        mTabEntities.add(new TabEntity(mTitles[0], 0, 0));
+        mTabEntities.add(new TabEntity(mTitles[1], 0, 0));
+        mTabEntities.add(new TabEntity(mTitles[2], 0, 0));
+        mTabEntities.add(new TabEntity(mTitles[3], 0, 0));
+        mTabEntities.add(new TabEntity(mTitles[4], 0, 0));
+
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
         tl_2();
@@ -201,6 +208,7 @@ public class OrderActivity extends BaseActivity {
 
     private void tl_2() {
         mCommonTabLayout.setTabData(mTabEntities);
+        mCommonTabLayout.setCurrentTab(position);
         mCommonTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {

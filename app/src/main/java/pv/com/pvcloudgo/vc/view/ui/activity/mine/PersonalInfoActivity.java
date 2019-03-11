@@ -1,20 +1,38 @@
 package pv.com.pvcloudgo.vc.view.ui.activity.mine;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.DraweeView;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.nereo.multi_image_selector.utils.FileUtils;
+import pv.com.pvcloudgo.model.bean.LoginBean;
+import pv.com.pvcloudgo.utils.ToastUtil;
+import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 import pv.com.pvcloudgo.utils.Contants;
 import pv.com.pvcloudgo.R;
@@ -24,6 +42,8 @@ import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.msg.LoginRespMsg;
 import pv.com.pvcloudgo.utils.DESUtil;
 import pv.com.pvcloudgo.utils.Utils;
+import pv.com.pvcloudgo.vc.view.ui.activity.start.UpdateUserInfoActivity;
+import pv.com.pvcloudgo.vc.widget.SelectPicPopupWindow;
 
 
 public class PersonalInfoActivity extends BaseActivity {
@@ -46,25 +66,27 @@ public class PersonalInfoActivity extends BaseActivity {
     ImageView imageExit;
     @Bind(R.id.user_avater)
     DraweeView userAvater;
+    @Bind(R.id.user_avater_update)
+    ImageView avaterUpdateButton;
+    @Bind(R.id.user_update)
+    Button updateButton;
     @Bind(R.id.user_nickname_tv)
     TextView userNicknameTv;
-    @Bind(R.id.user_phone_tv)
-    TextView userPhoneTv;
+    @Bind(R.id.user_email_tv)
+    TextView userEmailTv;
     @Bind(R.id.user_sex_tv)
     TextView userSexTv;
     @Bind(R.id.user_birth_tv)
     TextView userBirthTv;
-    @Bind(R.id.user_work_tv)
+    @Bind(R.id.user_phone_tv)
     TextView userWorkTv;
-    @Bind(R.id.user_homeland_tv)
-    TextView userHomelandTv;
-    @Bind(R.id.user_home_tv)
-    TextView userHomeTv;
-    @Bind(R.id.user_personid_tv)
-    TextView userPersonidTv;
-    @Bind(R.id.receip_ll)
-    LinearLayout receipLl;
+    @Bind(R.id.user_motto_tv)
+    TextView userMottoTv;
 
+
+
+
+    SelectPicPopupWindow menuWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,14 +112,36 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void bindData() {
         User user = App.getInstance().getUser();
-        if(user==null)return;
-        Utils.bindStrText(userNicknameTv,user.getNicheng());
-        Utils.bindStrText(userPhoneTv,user.getTelPhone());
-        Utils.bindStrText(userSexTv,user.getSex()==1?"男":"女");
-        Utils.bindStrText(userBirthTv,user.getZhuceDate());
-        Utils.bindStrText(userWorkTv,user.getZhiye());
-        Utils.bindStrText(userHomeTv,user.getJiatingzhuzhi());
-        Utils.bindStrText(userHomelandTv,user.getJiatingzhuzhi());
+        if (user == null) return;
+        if (user.getProfileImg() != null) {
+            Glide.with(this).load(user.getProfileImg()).into(userAvater);
+        }
+
+        Utils.bindStrText(userNicknameTv, user.getUsername());
+        Utils.bindStrText(userEmailTv, user.getEmail()==null? "未设置" : user.getEmail());
+        Utils.bindStrText(userSexTv, user.getGender()==null?"未设置":(user.getGender().equals("male") ? "男" : "女"));
+        Utils.bindStrText(userBirthTv, user.getBirthday()==null? "未设置" : user.getBirthday());
+        Utils.bindStrText(userWorkTv, user.getPhone()==null ? "未设置" : user.getPhone());
+        Utils.bindStrText(userMottoTv, user.getMotto()==null? "未设置" : user.getMotto());
+        updateButton.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                next(UpdateUserInfoActivity.class);
+
+                                            }
+                                        }
+        );
+
+        avaterUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowWindow();
+
+
+            }
+        });
+
+
 //        receipLl.setOnClickListener(v ->);
     }
 
@@ -108,53 +152,146 @@ public class PersonalInfoActivity extends BaseActivity {
         finish();
     }
 
-    public void login(View view) {
+
+    public void next(Class cls) {
 
 
-        String phone = null;
+        Intent intent = new Intent(this, cls);
 
-        String pwd = null;
+        startActivity(intent);
 
+        this.finish();
+    }
 
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("phone", phone);
-        params.put("password", DESUtil.encode(Contants.DES_KEY, pwd));
-
-        mHttpHelper.post(Contants.API.LOGIN, params, new SpotsCallBack<LoginRespMsg<User>>(this) {
-
-
+    public void ShowWindow() {
+        menuWindow = new SelectPicPopupWindow(this, new View.OnClickListener() {
             @Override
-            public void onSuccess(Response response, LoginRespMsg<User> userLoginRespMsg) {
+            public void onClick(View v) {
+                menuWindow.dismiss();
+                switch (v.getId()) {
+                    case R.id.btn_take_photo:
+                        ToastUtils.show("拍照---");
 
-
-                App application = App.getInstance();
-                application.putUser(userLoginRespMsg.getData(), userLoginRespMsg.getToken());
-
-                if (application.getIntent() == null) {
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-
-                    application.jumpToTargetActivity(mContext);
-                    finish();
-
+                        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        //下面这句指定调用相机拍照后的照片存储的路径
+                        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                Uri.fromFile(new File(Environment.getExternalStorageDirectory(), "userHead")));
+                        startActivityForResult(takeIntent, 1);
+                        break;
+                    case R.id.btn_pick_photo:
+                        ToastUtils.show("选择");
+                        break;
+                    case R.id.btn_cancel:
+                        menuWindow.dismiss();
+                    default:
+                        break;
                 }
-
-
-            }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-
             }
         });
+        menuWindow.showAtLocation(findViewById(R.id.personalinfo),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case 2:// 直接从相册获取
+                try {
+                    startPhotoZoom(data.getData());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();// 用户点击取消操作
+                }
+                break;
+            case 1:// 调用相机拍照
+                try {
+                    File temp = new File(Environment.getExternalStorageDirectory() + "/" + "userHead");
+                    startPhotoZoom(Uri.fromFile(temp));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();// 用户点击取消操作
+                }
+
+                break;
+            case 3:// 取得裁剪后的图片
+                if (data != null) {
+//                    Glide.with(this).load(data.getData()).into(userAvater);
+                    setPicToView(data);
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/png");
+        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 3);
+    }
+
+
+    private void setPicToView(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            // 取得SDCard图片路径做显示
+            Bitmap photo = extras.getParcelable("data");
+            Drawable drawable = new BitmapDrawable(null, photo);
+            ToastUtils.show(photo.toString());
+            userAvater.setImageDrawable(drawable);
+
+//            File urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
+
+
+
+
+        }
+    }
+
+
+    public void updateAvater(){
+        mHttpHelper.post("http://47.95.244.237:9990/chengfeng/per/login"
+                , "", new SpotsCallBack<LoginBean>(this) {
+                    @Override
+                    public void onSuccess(Response response, LoginBean LoginBean) {
+                        if (LoginBean != null && LoginBean.getMessage().equals("用户登录成功")) {
+
+                            ToastUtils.show(LoginBean.getMessage());
+                            App application = App.getInstance();
+                            application.putUser(LoginBean.getData(), LoginBean.getData().getToken());
+                            setResult(RESULT_OK);
+                            finish();
+
+                        } else {
+                            ToastUtils.show(LoginBean.getMessage());
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        ToastUtils.show("用户名或密码错误");
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show(errmsg);
+                    }
+                });
 
 
     }
+
+
 
 }

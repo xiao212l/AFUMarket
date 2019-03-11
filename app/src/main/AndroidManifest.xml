@@ -44,6 +44,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".vc.view.ui.activity.other.goodsActivity"/>
+        <activity android:name=".vc.view.ui.activity.start.UpdateUserInfoActivity"/>
+
         <activity android:name=".vc.view.ui.activity.other.WareListActivity" />
         <activity
             android:name=".vc.view.ui.activity.other.WareDetailActivity"

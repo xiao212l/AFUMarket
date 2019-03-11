@@ -15,11 +15,15 @@ import java.util.List;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.model.bean.Tab;
+import pv.com.pvcloudgo.vc.view.ui.activity.other.WareListActivity;
 import pv.com.pvcloudgo.vc.view.ui.fragment.CartFragment;
+import pv.com.pvcloudgo.vc.view.ui.fragment.CategoryFragment;
 import pv.com.pvcloudgo.vc.view.ui.fragment.CloudCirFragment;
 import pv.com.pvcloudgo.vc.view.ui.fragment.HomeFragment;
 import pv.com.pvcloudgo.vc.view.ui.fragment.MineFragment;
 import pv.com.pvcloudgo.vc.view.ui.fragment.VipFragment;
+import pv.com.pvcloudgo.vc.view.ui.fragment.goodsFragment;
+import pv.com.pvcloudgo.vc.view.ui.fragment.mine.OrderFragment;
 import pv.com.pvcloudgo.vc.widget.FragmentTabHost;
 
 public class MainActivity extends BaseActivity {
@@ -46,16 +50,18 @@ public class MainActivity extends BaseActivity {
 
     private void initTab() {
 
+        Tab tab_home = new Tab(VipFragment.class,R.string.home,R.drawable.selector_icon_home);
 
-        Tab tab_home = new Tab(HomeFragment.class,R.string.home,R.drawable.selector_icon_home);
-        Tab tab_hot = new Tab(VipFragment.class,R.string.hot,R.drawable.selector_icon_hot);
-        Tab tab_category = new Tab(CloudCirFragment.class,R.string.catagory,R.drawable.selector_icon_category);
+//        Tab tab_hot = new Tab(CategoryFragment2.class,R.string.ht,R.drawable.selector_icon_hot);
+        Tab tab_hot = new Tab(goodsFragment.class,R.string.hot,R.drawable.selector_icon_hot);
+
+
         Tab tab_cart = new Tab(CartFragment.class,R.string.cart,R.drawable.selector_icon_cart);
         Tab tab_mine = new Tab(MineFragment.class,R.string.mine,R.drawable.selector_icon_mine);
 
         mTabs.add(tab_home);
         mTabs.add(tab_hot);
-        mTabs.add(tab_category);
+       // mTabs.add(tab_category);
         mTabs.add(tab_cart);
         mTabs.add(tab_mine);
 

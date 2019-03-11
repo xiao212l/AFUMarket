@@ -1,6 +1,8 @@
 package pv.com.pvcloudgo.vc.view.ui.activity.start;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -11,6 +13,9 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Response;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -18,16 +23,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.app.App;
+import pv.com.pvcloudgo.model.bean.LoginBean;
 import pv.com.pvcloudgo.model.bean.Param;
 import pv.com.pvcloudgo.model.bean.User;
 import pv.com.pvcloudgo.http.SpotsCallBack;
-import pv.com.pvcloudgo.model.base.BaseRespMsg;
-import pv.com.pvcloudgo.model.msg.LoginResp;
-import pv.com.pvcloudgo.utils.Contants;
 import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 import pv.com.pvcloudgo.vc.widget.ClearEditText;
-
 
 public class LoginActivity extends BaseActivity {
 
@@ -120,42 +122,66 @@ public class LoginActivity extends BaseActivity {
         }
 
 
-        Map<String, Object> params = new Param(3);
-        params.put("name", phone);
-        params.put("password", pwd);
+        Map<String, Object> params = new Param(2);
 
-        mHttpHelper.post(Contants.API.LOGIN, params, new SpotsCallBack<LoginResp>(this) {
+//        params.put("password", pwd);
+//        params.put("username", phone);
 
-
-            @Override
-            public void onSuccess(Response response, LoginResp userLoginRespMsg) {
-                if (userLoginRespMsg != null && userLoginRespMsg.getStatus().equals(BaseRespMsg.STATUS_SUCCESS)) {
+        params.put("password",pwd);
+        params.put("username", phone);
 
 
-                    App application = App.getInstance();
-                    application.putUser(userLoginRespMsg.getResults().getMyUser(), userLoginRespMsg.getResults().getToken());
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-                    showNormalErr(userLoginRespMsg);
-                }
+        mHttpHelper.post("http://47.95.244.237:9990/chengfeng/per/login"
+                , params, new SpotsCallBack<LoginBean>(this) {
+                    @Override
+                    public void onSuccess(Response response, LoginBean LoginBean) {
+                        if (LoginBean != null && LoginBean.getMessage().equals("用户登录成功")) {
+
+                            ToastUtils.show(LoginBean.getMessage());
+                            App application = App.getInstance();
+                            LoginBean.getData().setPassword(pwd);
+                            application.putUser(LoginBean.getData(), LoginBean.getData().getToken());
+                            setResult(RESULT_OK);
+                            finish();
+
+                        } else {
+                            ToastUtils.show(LoginBean.getMessage());
+                        }
 
 
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        ToastUtils.show("用户名或密码错误");
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show(errmsg);
+                    }
+                });
+
+
+    }
+
+
+    public static String getJson(Context context, String fileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        //获得assets资源管理器
+        AssetManager assetManager = context.getAssets();
+        //使用IO流读取json文件内容
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    assetManager.open(fileName), "utf-8"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
             }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-//                showFail();
-                testlogin();
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-                ToastUtils.show(errmsg);
-            }
-        });
-
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
     }
 
 

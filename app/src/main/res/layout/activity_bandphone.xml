@@ -66,12 +66,12 @@
     </LinearLayout>
 
     <Button
-        style="@style/bigPurpleButton"
+        android:id="@+id/btn_complete"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:id="@+id/btn_complete"
         android:layout_marginLeft="@dimen/largePadding"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="@dimen/largePadding"
         android:text="完成" />
 

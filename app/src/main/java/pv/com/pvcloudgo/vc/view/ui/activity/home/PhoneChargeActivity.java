@@ -72,7 +72,7 @@ public class PhoneChargeActivity extends BaseActivity {
 
     private void init() {
 
-        mPhoneEdt.setText(App.getInstance().getUser().getTelPhone());
+        mPhoneEdt.setText("123333213123");
 
 
 

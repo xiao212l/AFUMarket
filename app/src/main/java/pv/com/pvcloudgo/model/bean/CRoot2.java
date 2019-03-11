@@ -32,6 +32,24 @@ public class CRoot2 extends BaseBean {
     }
 
     public CRoot2() {
+        orderIndex = "1";
+        webTiCheng = "123123213";
+        isQuanqiugou = "全球购";
+        quanqiugouShuiType = "啥东西";
+        omoy_root_backbill = 111;
+        status = "status";
+        wrap_ptlist_rootImage = "https://picsum.photos/200/100";
+        wrap_ptlist_threeImage = "https://picsum.photos/100/100";
+        name = "案例";
+        rootTypeId = 1;
+        isRoot = 1;
+        isLeaf = 0;
+        jibie = 1;
+        url = "";
+        treeId = "11111111";
+        fatherId = 2;
+        allName = "全部名字";
+
     }
 
     public CRoot2(String name) {

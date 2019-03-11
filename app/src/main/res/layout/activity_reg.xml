@@ -6,7 +6,9 @@
     android:background="@color/bg_color"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" android:id="@+id/toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
 
     <LinearLayout
@@ -24,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:hint="请输入常用手机号码"
+            android:hint="请输入手机号码（必填）"
             android:inputType="phone" />
 
         <View style="@style/line_vertical"
@@ -36,27 +38,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/smallPadding"
-            android:paddingTop="@dimen/smallPadding">
+            android:paddingTop="@dimen/smallPadding"
+            android:paddingBottom="@dimen/smallPadding">
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
-                android:id="@+id/edittxt_code"
+                android:id="@+id/edittxt_username"
                 style="@style/editText_base"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
-                android:hint="请输入验证码"
-                android:inputType="phone" />
+                android:hint="请输入用户名（必填）" />
 
-            <TextView
-                android:id="@+id/ac_reg_virifycode_tv"
-                android:layout_width="wrap_content"
-                android:gravity="center"
-                android:layout_height="match_parent"
-                android:text="获取验证码"
-                android:textColor="@color/grey" />
         </LinearLayout>
 
         <View style="@style/line_vertical"
@@ -67,8 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/smallPadding"
-            android:paddingTop="@dimen/smallPadding">
+            android:paddingTop="@dimen/smallPadding"
+            android:paddingBottom="@dimen/smallPadding">
 
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
@@ -78,7 +72,58 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:hint="请输入密码"
+                android:hint="请输入密码（必填）"
+                android:inputType="textPassword" />
+
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/smallPadding"
+            android:paddingBottom="@dimen/smallPadding">
+
+
+            <pv.com.pvcloudgo.vc.widget.ClearEditText
+                android:id="@+id/edittxt_email"
+                style="@style/editText_base"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:hint="请输入邮箱"
+                android:inputType="textPassword" />
+
+
+        </LinearLayout>
+
+        <View style="@style/line_vertical"
+
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/smallPadding"
+            android:paddingBottom="@dimen/smallPadding">
+
+
+            <pv.com.pvcloudgo.vc.widget.ClearEditText
+                android:id="@+id/edittxt_id"
+                style="@style/editText_base"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:hint="请输入身份证号"
                 android:inputType="textPassword" />
 
 
@@ -91,13 +136,14 @@
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/ac_reg_btn"
-        style="@style/bigPurpleButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginLeft="@dimen/largePadding"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="@dimen/largePadding"
         android:text="注册" />
 
@@ -106,7 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:text="点击注册，表示你同意《云购用户协议》"
+        android:text="点击注册，表示你同意《用户协议》"
         android:textColor="@color/border_color"
         android:textSize="12sp"
 

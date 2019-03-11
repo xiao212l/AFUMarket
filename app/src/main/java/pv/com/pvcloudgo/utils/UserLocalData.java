@@ -27,7 +27,7 @@ public class UserLocalData {
         String user_json= PreferencesUtils.getString(context,Contants.USER_JSON);
         if(!TextUtils.isEmpty(user_json)){
 
-            return  JSONUtil.fromJson(user_json,User.class);
+           return  JSONUtil.fromJson(user_json,User.class);
         }
         return  null;
     }

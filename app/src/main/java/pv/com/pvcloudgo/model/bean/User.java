@@ -6,204 +6,128 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-
     private Long id;
-    private String logo_url;
-    private String mobi;
-    String account;
-    String wxId;
-    String bianhan;
-    String nicheng, password, telPhone, email, touxiang, touxiangMin, qq, weibo, addressTreeIds, selfInfo, status, vo_sex;
-    String zhiye, aihao, jiatingzhuzhi, vo_gradeName, salt, laiyuan;
-    int addressId, sex, age, shopId, vckDataId;//普通-0，商家-！0
-    String zhuceDate;
+    private String username;
+    private String motto;
+    private String gender;
+    private String idcard;
+    private String profileImg;
+    private String email;
+    private String token;
+    private String phone;
+    private String birthday;
+    private String password;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLogo_url() {
-        return logo_url;
-    }
-
-    public void setLogo_url(String logo_url) {
-        this.logo_url = logo_url;
-    }
-
-
-    public String getMobi() {
-        return mobi;
-    }
-
-    public void setMobi(String mobi) {
-        this.mobi = mobi;
-    }
-
-    public String getWxId() {
-        return wxId;
-    }
-
-    public String getBianhan() {
-        return bianhan;
-    }
-
-    public String getNicheng() {
-        return nicheng;
+    public String getBirthday() {
+        return birthday;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public String getTelPhone() {
-        return telPhone;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getTouxiang() {
-        return touxiang;
+    public String getIdcard() {
+        return idcard;
     }
 
-    public String getTouxiangMin() {
-        return touxiangMin;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getQq() {
-        return qq;
+    public Long getId() {
+        return id;
     }
 
-    public String getWeibo() {
-        return weibo;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getAddressTreeIds() {
-        return addressTreeIds;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getSelfInfo() {
-        return selfInfo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 
-    public String getVo_sex() {
-        return vo_sex;
+    public void setProfileImg(String profileImg) {
+        this.profileImg = profileImg;
     }
 
-    public String getZhiye() {
-        return zhiye;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public String getAihao() {
-        return aihao;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getJiatingzhuzhi() {
-        return jiatingzhuzhi;
+    public String getToken() {
+        return token;
     }
 
-    public String getVo_gradeName() {
-        return vo_gradeName;
+    public String getGender() {
+        return gender;
     }
 
-    public String getSalt() {
-        return salt;
+    public String getEmail() {
+        return email;
     }
 
-    public String getLaiyuan() {
-        return laiyuan;
+    public String getMotto() {
+        return motto;
     }
 
-    public int getAddressId() {
-        return addressId;
+    public String getProfileImg() {
+        return profileImg;
     }
 
-    public int getSex() {
-        return sex;
+    public String getUsername() {
+        return username;
     }
 
-    public int getAge() {
-        return age;
-    }
 
-    public int getShopId() {
-        return shopId;
-    }
-
-    public int getVckDataId() {
-        return vckDataId;
-    }
-
-    public String getZhuceDate() {
-        return zhuceDate;
-    }
-
-    public void setNicheng(String nicheng) {
-        this.nicheng = nicheng;
-    }
-
-    public void setTelPhone(String telPhone) {
-        this.telPhone = telPhone;
-    }
 
     public User() {
-        this.sex = 1;
-        this.zhuceDate = "2017.2.13";
-        this.jiatingzhuzhi = "中国.成都";
-        this.zhiye = "Android development";
-        this.status = "OK";
-        this.nicheng = "JmStefanAndroid";
-        this.telPhone = "183********";
-        this.password = "test";
-        this.account = "test";
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", logo_url='" + logo_url + '\'' +
-                ", mobi='" + mobi + '\'' +
-                ", wxId='" + wxId + '\'' +
-                ", bianhan='" + bianhan + '\'' +
-                ", nicheng='" + nicheng + '\'' +
-                ", password='" + password + '\'' +
-                ", telPhone='" + telPhone + '\'' +
-                ", email='" + email + '\'' +
-                ", touxiang='" + touxiang + '\'' +
-                ", touxiangMin='" + touxiangMin + '\'' +
-                ", qq='" + qq + '\'' +
-                ", weibo='" + weibo + '\'' +
-                ", addressTreeIds='" + addressTreeIds + '\'' +
-                ", selfInfo='" + selfInfo + '\'' +
-                ", status='" + status + '\'' +
-                ", vo_sex='" + vo_sex + '\'' +
-                ", zhiye='" + zhiye + '\'' +
-                ", aihao='" + aihao + '\'' +
-                ", jiatingzhuzhi='" + jiatingzhuzhi + '\'' +
-                ", vo_gradeName='" + vo_gradeName + '\'' +
-                ", salt='" + salt + '\'' +
-                ", laiyuan='" + laiyuan + '\'' +
-                ", addressId=" + addressId +
-                ", sex=" + sex +
-                ", age=" + age +
-                ", shopId=" + shopId +
-                ", vckDataId=" + vckDataId +
-                ", zhuceDate='" + zhuceDate + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", logo_url='" + logo_url + '\'' +
+//                ", mobi='" + mobi + '\'' +
+//                ", wxId='" + wxId + '\'' +
+//                ", bianhan='" + bianhan + '\'' +
+//                ", nicheng='" + nicheng + '\'' +
+//                ", password='" + password + '\'' +
+//                ", telPhone='" + telPhone + '\'' +
+//                ", email='" + email + '\'' +
+//                ", touxiang='" + touxiang + '\'' +
+//                ", touxiangMin='" + touxiangMin + '\'' +
+//                ", qq='" + qq + '\'' +
+//                ", weibo='" + weibo + '\'' +
+//                ", addressTreeIds='" + addressTreeIds + '\'' +
+//                ", selfInfo='" + selfInfo + '\'' +
+//                ", status='" + status + '\'' +
+//                ", vo_sex='" + vo_sex + '\'' +
+//                ", vo_gradeName='" + vo_gradeName + '\'' +
+//                ", salt='" + salt + '\'' +
+//                ", laiyuan='" + laiyuan + '\'' +
+//                ", addressId=" + addressId +
+//                ", sex=" + sex +
+//                ", age=" + age +
+//                ", shopId=" + shopId +
+//                ", vckDataId=" + vckDataId +
+//                ", zhuceDate='" + zhuceDate + '\'' +
+//                '}';
+//   }
 }

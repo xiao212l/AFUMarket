@@ -10,11 +10,11 @@ public class Param extends HashMap {
 
 
     public Param() {
-        this.put("appKey","fdsafdasdfssd");
-    }
+//        this.put("appKey","fdsafdasdfssd");
+   }
 
     public Param(int i) {
         super(i);
-        this.put("appKey","fdsafdasdfssd");
+//        this.put("appKey","fdsafdasdfssd");
     }
 }

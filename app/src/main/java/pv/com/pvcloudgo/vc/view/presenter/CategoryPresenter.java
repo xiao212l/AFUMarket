@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.squareup.okhttp.Response;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 import pv.com.pvcloudgo.http.SimpleCallback;
 import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.base.IBaseModel;
+import pv.com.pvcloudgo.model.bean.CRoot2;
 import pv.com.pvcloudgo.model.bean.Category;
 import pv.com.pvcloudgo.model.bean.Param;
 import pv.com.pvcloudgo.model.msg.CategoryResp;
@@ -84,33 +86,39 @@ public class CategoryPresenter extends BasePresenter {
     public void load() {
 
         Map<String, Object> params = new Param(1);
-        mHttpHelper.get(Contants.API.productTypeList, params, new SpotsCallBack<CategoryResp>(mContext) {
-
-
-            @Override
-            public void onSuccess(Response response, CategoryResp mCategoryResp) {
-                if (mCategoryResp != null && mCategoryResp.getResults() != null) {
+//        mHttpHelper.get(Contants.API.productTypeList, params, new SpotsCallBack<CategoryResp>(mContext) {
+//
+//
+//            @Override
+//            public void onSuccess(Response response, CategoryResp mCategoryResp) {
+//                if (mCategoryResp != null && mCategoryResp.getResults() != null) {
                     long category_id = 0;
-                    List<Category> categories = mCategoryResp.getResults().getPtTypeList();
+                    //List<Category> categories = mCategoryResp.getResults().getPtTypeList();
+                    List<Category> categories = new ArrayList<Category>();
+                    categories.add(new Category(1,"女装"));
+                    categories.add(new Category(2,"男装"));
+                    categories.add(new Category());
+
+
                     mBaseView.showCategoryData(categories);
 
                     if (categories != null && categories.size() > 0)
                         category_id = categories.get(0).getId();
                     requestWares(category_id);
-                }
-
-            }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-
-            }
-        });
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(Response response, int code, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onServerError(Response response, int code, String errmsg) {
+//
+//            }
+//        });
 
 
     }
@@ -119,33 +127,40 @@ public class CategoryPresenter extends BasePresenter {
         HashMap<String, Object> params = new Param(2);
         params.put("ptId", ptId);
 
-        mHttpHelper.get(Contants.API.findByRoot, params, new SimpleCallback<CategoryRootResp>(mContext) {
+//        mHttpHelper.get(Contants.API.findByRoot, params, new SimpleCallback<CategoryRootResp>(mContext) {
+//
+//
+//            @Override
+//            public void onSuccess(Response response, CategoryRootResp resp) {
+//
+//
+//                if (resp != null && resp.getResults() != null && resp.getResults().getProductType() != null &&
+//                        resp.getResults().getProductType().getChilds() != null &&
+//                        resp.getResults().getProductType().getChilds().size() != 0) {
+ //                   CategoryRootResp resp = new CategoryRootResp();
 
+  //                  mBaseView.showWaresData(resp.getResults().getProductType().getChilds());
+                      List<CRoot2> root = new ArrayList<CRoot2>();
+                      root.add(new CRoot2());
+                      root.add(new CRoot2("lash" ));
+                      mBaseView.showWaresData(root);
 
-            @Override
-            public void onSuccess(Response response, CategoryRootResp resp) {
-
-
-                if (resp != null && resp.getResults() != null && resp.getResults().getProductType() != null &&
-                        resp.getResults().getProductType().getChilds() != null &&
-                        resp.getResults().getProductType().getChilds().size() != 0) {
-                    mBaseView.showWaresData(resp.getResults().getProductType().getChilds());
-                } else ToastUtils.show("暂无数据");
-
-            }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-
-            }
-
-
-        });
+//                } else ToastUtils.show("暂无数据");
+//
+//            }
+//
+//            @Override
+//            public void onError(Response response, int code, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onServerError(Response response, int code, String errmsg) {
+//
+//            }
+//
+//
+//        });
 
     }
 

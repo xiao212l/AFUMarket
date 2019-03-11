@@ -18,7 +18,7 @@ import pv.com.pvcloudgo.vc.adapter.ShopRecyclerViewAdapter;
 import pv.com.pvcloudgo.vc.view.ui.fragment.dummy.DummyContent;
 import pv.com.pvcloudgo.vc.view.ui.activity.vip.ShopActivity;
 
-import static com.umeng.socialize.utils.DeviceConfig.context;
+//import static com.umeng.socialize.utils.DeviceConfig.context;
 
 
 /**
@@ -51,7 +51,7 @@ public class VipFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), ShopActivity.class));
             }
         };
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(new ShopRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
             @Override

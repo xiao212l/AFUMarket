@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_color"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/personalinfo">
 
     <pv.com.pvcloudgo.vc.widget.StretchScrollView
         android:layout_width="match_parent"
@@ -53,9 +54,10 @@
                         android:layout_marginRight="@dimen/middlePadding"
                         android:layout_marginTop="@dimen/middlePadding"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pp_shoes" />
+                        android:src="@drawable/default_head" />
 
                     <ImageView
+                        android:id="@+id/user_avater_update"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/middlePadding"
@@ -86,11 +88,6 @@
                         android:layout_marginRight="@dimen/middlePadding"
                         android:text="小徐" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
 
                 <View style="@style/line_vertical" />
@@ -106,22 +103,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/middlePadding"
                         android:layout_weight="1"
-                        android:text="登录手机"
+                        android:text="邮箱"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/user_phone_tv"
+                        android:id="@+id/user_email_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/middlePadding"
-                        android:text="18782932561" />
+                        android:text="***********" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
 
                 <View style="@style/line_vertical" />
@@ -158,11 +150,6 @@
                         android:layout_marginRight="@dimen/middlePadding"
                         android:text="男" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
 
                 <View style="@style/line_vertical" />
@@ -189,11 +176,6 @@
                         android:layout_marginRight="@dimen/middlePadding"
                         android:text="1987-06-17" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
 
                 <View style="@style/line_vertical" />
@@ -209,22 +191,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/middlePadding"
                         android:layout_weight="1"
-                        android:text="职业"
+                        android:text="手机号"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/user_work_tv"
+                        android:id="@+id/user_phone_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/middlePadding"
                        />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
 
                 <View style="@style/line_vertical" />
@@ -239,35 +216,6 @@
 
                 <View style="@style/line_vertical" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/middlePadding"
-                        android:layout_weight="1"
-                        android:text="现居地"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/user_homeland_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
-                </LinearLayout>
-
                 <View style="@style/line_vertical" />
 
                 <LinearLayout
@@ -281,94 +229,40 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/middlePadding"
                         android:layout_weight="1"
-                        android:text="家庭住址"
+                        android:text="个性签名"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/user_home_tv"
+                        android:id="@+id/user_motto_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/middlePadding"
                         />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
                 </LinearLayout>
+
 
                 <View style="@style/line_vertical" />
             </LinearLayout>
 
-            <LinearLayout
+
+
+            <Button
+                android:id="@+id/user_update"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/middlePadding"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_marginLeft="@dimen/largePadding"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="@dimen/largePadding"
+                android:text="修改信息" />
 
-                <View style="@style/line_vertical" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/middlePadding"
-                        android:layout_weight="1"
-                        android:text="个人认证"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/user_personid_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:text="待申请" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
-                </LinearLayout>
-
-                <View style="@style/line_vertical" />
-
-                <LinearLayout
-                    android:id="@+id/receip_ll"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/middlePadding"
-                        android:layout_weight="1"
-                        android:text="收货地址"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
-
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/middlePadding"
-                        android:src="@drawable/ic_arr_right_1" />
-                </LinearLayout>
-
-                <View style="@style/line_vertical" />
-            </LinearLayout>
 
         </LinearLayout>
+
+
+
+
     </pv.com.pvcloudgo.vc.widget.StretchScrollView>
 </LinearLayout>

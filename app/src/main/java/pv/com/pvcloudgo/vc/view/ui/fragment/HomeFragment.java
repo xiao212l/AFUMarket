@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import pv.com.pvcloudgo.model.base.BaseRespMsg;
 import pv.com.pvcloudgo.utils.Contants;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.vc.view.ui.activity.other.WareListActivity;
@@ -216,8 +217,8 @@ public class HomeFragment extends BaseFragment {
 
     private void loadHomeData() {
 
-        HashMap<String, Object> param = new Param();
-        param.put("token", App.getInstance().getToken());
+//        HashMap<String, Object> param = new Param();
+//        param.put("token", App.getInstance().getToken());
 //        mHttpHelper.get(Contants.API.HOME, param, new SpotsCallBack<List<Banner>>(getActivity()) {
 //
 //
@@ -231,6 +232,11 @@ public class HomeFragment extends BaseFragment {
 //
 //            @Override
 //            public void onError(Response response, int code, Exception e) {
+//                showFail();
+//            }
+//
+//            @Override
+//            public void onServerError(Response response, int code, String errmsg) {
 //                showFail();
 //            }
 //        });

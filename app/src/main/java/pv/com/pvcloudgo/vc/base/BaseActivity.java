@@ -98,7 +98,9 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    protected void setupToolbar(Toolbar mToolbar, boolean homeIconVisible) {
+
+    //protected
+    public void setupToolbar(Toolbar mToolbar, boolean homeIconVisible) {
         if (mToolbar == null) {
             throw new RuntimeException("toolbar cannot be null!");
         }

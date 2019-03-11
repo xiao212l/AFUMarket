@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -86,6 +87,29 @@ public class OkHttpHelper {
         request(request, callback);
     }
 
+    public void post(String url, String json, BaseCallback callback) {
+
+        Request.Builder builder = new Request.Builder()
+                .url(url);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
+        builder.post(body);
+        Request request = builder.build();
+        request(request, callback);
+    }
+
+
+    public void put(String url, String json, BaseCallback callback) {
+
+        Request.Builder builder = new Request.Builder()
+                .url(url);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
+        builder.put(body);
+        Request request = builder.build();
+        request(request, callback);
+
+    }
+
+
 
     public void request(final Request request, final BaseCallback callback) {
 
@@ -106,7 +130,7 @@ public class OkHttpHelper {
                 if (response.isSuccessful()) {
 
                     String resultStr = response.body().string();
-                    Log.e(TAG, "URL:"+response.request().httpUrl().url().toString()+" result=" + resultStr);
+                    Log.e(TAG, "URL:" + response.request().httpUrl().url().toString() + " result=" + resultStr);
 
                     if (callback.mType == String.class) {
                         callbackSuccess(callback, response, resultStr);
@@ -116,7 +140,7 @@ public class OkHttpHelper {
                                 BaseRespMsg respMsg = mGson.fromJson(resultStr, BaseRespMsg.class);
                                 if (respMsg != null && respMsg.getStatus().equals(BaseRespMsg.STATUS_ERROR) && !TextUtils.isEmpty(respMsg.getMessage())) {
                                     ToastUtils.show(respMsg.getMessage());
-                                    if(respMsg.getMessage().equals("抱歉，请先登录")){
+                                    if (respMsg.getMessage().equals("抱歉，请先登录")) {
                                         App application = App.getInstance();
                                         application.clearUser();
                                         ActivityManager.getInstance().finishAll();
@@ -246,7 +270,7 @@ public class OkHttpHelper {
         if (params == null)
             params = new HashMap<>(1);
 
-        String  token= App.getInstance().getToken();
+        String token = App.getInstance().getToken();
         if (!TextUtils.isEmpty(token))
             params.put("token", token);
 
