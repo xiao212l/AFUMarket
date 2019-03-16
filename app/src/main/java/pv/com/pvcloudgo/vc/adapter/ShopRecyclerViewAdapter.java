@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class ShopRecyclerViewAdapter extends RecyclerView.Adapter<ShopRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
+
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,16 +52,19 @@ public class ShopRecyclerViewAdapter extends RecyclerView.Adapter<ShopRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return 10;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public DummyItem mItem;
-
+        public TextView ItemAtten,GoodText,GoodName;
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            ItemAtten = (TextView)view.findViewById(R.id.item_atten);
+            GoodText = (TextView)view.findViewById(R.id.good_text);
+            GoodName = (TextView)view.findViewById(R.id.good_name);
         }
 
     }

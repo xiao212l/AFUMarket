@@ -10,22 +10,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.okhttp.Response;
 
 import java.util.List;
+import java.util.Map;
 
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.http.OkHttpHelper;
 import pv.com.pvcloudgo.http.SpotsCallBack;
+import pv.com.pvcloudgo.model.bean.Param;
 import pv.com.pvcloudgo.model.bean.goodsFragmentBean;
+import pv.com.pvcloudgo.utils.ToastUtil;
 import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.adapter.GoodsListRecyclerViewAdapter;
+import pv.com.pvcloudgo.vc.base.BaseActivity;
 
 public class GoodsFragment2 extends BaseFragment implements View.OnClickListener {
 
     private List<goodsFragmentBean.good> goodlist;
-
 
     private Context context;
     private ImageView ivGoodsType;
@@ -47,17 +51,36 @@ public class GoodsFragment2 extends BaseFragment implements View.OnClickListener
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
-        mHttpHelper.get("http://47.95.244.237:9990/chengfeng/product/simple/list?categoryId=100006&pageNum=1&pageSize=2"
-                , new SpotsCallBack<goodsFragmentBean>(getActivity()) {
+        super.onActivityCreated(savedInstanceState);
+
+        recyclerView= (RecyclerView) getActivity().findViewById(R.id.recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+
+        Map<String, Object> params = new Param(3);
+        params.put("categoryId", "100006");
+        params.put("pageNum", "1");
+        params.put("pageSize", "2");
+
+
+        mHttpHelper.get("http://47.95.244.237:9990/chengfeng/product/simple/list"
+                , params, new SpotsCallBack<goodsFragmentBean>(getActivity()) {
                     @Override
                     public void onSuccess(Response response, goodsFragmentBean goodsBean) {
                         if (goodsBean != null && goodsBean.getMessage().equals("请求成功")) {
                             goodlist = goodsBean.getData();
+
+
+
+                            adapter = new GoodsListRecyclerViewAdapter(this.mContext,goodlist);
+                            recyclerView.setAdapter(adapter);
+
                         } else {
                             ToastUtils.show("请求失败");
                         }
 
                     }
+
 
                     @Override
                     public void onError(Response response, int code, Exception e) {
@@ -71,16 +94,16 @@ public class GoodsFragment2 extends BaseFragment implements View.OnClickListener
                 });
 
 
-        super.onActivityCreated(savedInstanceState);
-        //ivGoodsType= (ImageView)getActivity().findViewById(R.id.iv_goods_type);
-//        ivGoodsType.setOnClickListener(this);
+
         ivStick= (ImageView) getActivity().findViewById(R.id.iv_stick);
         ivStick.setOnClickListener(this);
-        recyclerView= (RecyclerView) getActivity().findViewById(R.id.recyclerview);
-        adapter = new GoodsListRecyclerViewAdapter(context,goodlist);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
+
+
+
+        //ivGoodsType= (ImageView)getActivity().findViewById(R.id.iv_goods_type);
+//        ivGoodsType.setOnClickListener(this);
+
+
 
         //设置滑动监听
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -88,16 +111,46 @@ public class GoodsFragment2 extends BaseFragment implements View.OnClickListener
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+
                 if (layoutManager instanceof LinearLayoutManager) {
                     LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
                     //获取第一个可见位置
-                    int firstVisibleItemPosition = linearManager.findFirstVisibleItemPosition();
+                    int LastVisibleItemPosition = linearManager.findLastVisibleItemPosition();
                     //当滑动到第十个以上时显示置顶图标
-                    if (firstVisibleItemPosition>10) {
-                        ivStick.setVisibility(View.VISIBLE);
-                    }else {
-                        ivStick.setVisibility(View.GONE);
+//
+//                    ToastUtils.show(""+LastVisibleItemPosition);
+                    if (LastVisibleItemPosition==(adapter.getItemCount() - 1)) {
+                        mHttpHelper.get("http://47.95.244.237:9990/chengfeng/product/simple/list"
+                                , params, new SpotsCallBack<goodsFragmentBean>(getActivity()) {
+                                    @Override
+                                    public void onSuccess(Response response, goodsFragmentBean goodsBean) {
+
+                                        if (goodsBean != null && goodsBean.getMessage().equals("请求成功")) {
+
+                                            goodlist = goodsBean.getData();
+                                            adapter.setGoodlist(goodlist);
+                                            ToastUtils.show("加载成功");
+                                            adapter.notifyItemRangeChanged(adapter.getItemCount(),adapter.getItemCount() +  goodlist.size());
+                                            ToastUtils.show(""+adapter.getItemCount());
+                                            adapter.notifyDataSetChanged();
+                                        } else {
+                                            ToastUtils.show("请求失败");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response response, int code, Exception e) {
+                                        ToastUtils.show("请求失败");
+                                    }
+
+                                    @Override
+                                    public void onServerError(Response response, int code, String errmsg) {
+                                        ToastUtils.show("请求失败,服务器无响应");
+                                    }
+                                });
                     }
+
+
                 }
             }
         });
@@ -110,6 +163,7 @@ public class GoodsFragment2 extends BaseFragment implements View.OnClickListener
 
     }
 
+    @Override
     public void init() {
         Fresco.initialize(getActivity());
     }
@@ -140,8 +194,6 @@ public class GoodsFragment2 extends BaseFragment implements View.OnClickListener
                 break;
         }
     }
-
-
 
 
 

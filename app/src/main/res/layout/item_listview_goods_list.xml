@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:paddingTop="15dp"
-            android:text="小米 (MI) 小米电视3S 60英寸HDR 4K超高清超薄金属机身64位智能"
+            android:text="加载中，请稍候"
             android:textColor="#333333"
             android:textSize="16sp" />
 
@@ -38,7 +38,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="颐众价：￥1999.00"
             android:textStyle="bold"
             android:textColor="#ef3030"
             android:textSize="15sp" />
@@ -47,7 +46,6 @@
             android:id="@+id/tv_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="市场价：￥2999.00"
             android:textColor="#999999"
             android:textSize="12sp"
             android:paddingBottom="15dp"/>

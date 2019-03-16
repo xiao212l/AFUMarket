@@ -45,7 +45,7 @@ public class VipFragment extends BaseFragment {
 
     @Override
     public void init() {
-        mListener=new OnListFragmentInteractionListener() {
+        mListener = new OnListFragmentInteractionListener() {
             @Override
             public void onListFragmentInteraction(DummyContent.DummyItem item) {
                 startActivity(new Intent(getActivity(), ShopActivity.class));
@@ -62,7 +62,7 @@ public class VipFragment extends BaseFragment {
                     public void run() {
                         mRecyclerView.refreshComplete();
                     }
-                },3000);
+                }, 3000);
             }
 
             @Override
@@ -73,7 +73,7 @@ public class VipFragment extends BaseFragment {
                     public void run() {
                         mRecyclerView.loadMoreComplete();
                     }
-                },3000);
+                }, 3000);
             }
         });
         mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallBeat);
