@@ -7,13 +7,16 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.squareup.okhttp.Route;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,13 +31,13 @@ import pv.com.pvcloudgo.utils.ActivityManager;
 import pv.com.pvcloudgo.utils.ToastUtils;
 
 
+
 public class OkHttpHelper {
 
 
     public static final int TOKEN_MISSING = 401;// token 丢失
     public static final int TOKEN_ERROR = 402; // token 错误
     public static final int TOKEN_EXPIRE = 403; // token 过期
-
 
     public static final String TAG = "OkHttpHelper";
 
@@ -81,9 +84,22 @@ public class OkHttpHelper {
     }
 
 
+    public void Get(String url,String Token, BaseCallback callback) {
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization","Bearer "+Token)
+                .build();
+
+        request(request, callback);
+
+    }
     public void post(String url, Map<String, Object> param, BaseCallback callback) {
 
         Request request = buildPostRequest(url, param);
+
+
         request(request, callback);
     }
 
@@ -307,10 +323,10 @@ public class OkHttpHelper {
                 builder.add(entry.getKey(), entry.getValue() == null ? "" : entry.getValue().toString());
             }
 
-            String token = App.getInstance().getToken();
-            if (!TextUtils.isEmpty(token))
-                builder.add("token", token);
-        }
+//            String token = App.getInstance().getToken();
+//            if (!TextUtils.isEmpty(token))
+//                builder.add("token", token);
+         }
 
         return builder.build();
 

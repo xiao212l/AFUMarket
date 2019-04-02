@@ -7,16 +7,16 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private Long id;
-    private String username;
+    private String nickname;
     private String motto;
     private String gender;
     private String idcard;
     private String profileImg;
     private String email;
-    private String token;
     private String phone;
     private String birthday;
     private String password;
+    private Long communityId;
 
     public String getBirthday() {
         return birthday;
@@ -62,16 +62,8 @@ public class User implements Serializable {
         this.profileImg = profileImg;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getToken() {
-        return token;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getGender() {
@@ -90,11 +82,17 @@ public class User implements Serializable {
         return profileImg;
     }
 
-    public String getUsername() {
-        return username;
+    public String getNickname() {
+        return nickname;
     }
 
+    public Long getCommunityId() {
+        return communityId;
+    }
 
+    public void setCommunityId(Long communityId) {
+        this.communityId = communityId;
+    }
 
     public User() {
     }

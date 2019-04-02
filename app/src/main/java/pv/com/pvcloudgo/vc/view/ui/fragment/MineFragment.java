@@ -25,6 +25,7 @@ import pv.com.pvcloudgo.model.bean.User;
 import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.base.BaseRespMsg;
 import pv.com.pvcloudgo.model.msg.MineMsg;
+import pv.com.pvcloudgo.utils.ToastUtil;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.OrderActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.PersonalInfoActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.SettingActivity;
@@ -108,10 +109,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 next(SettingActivity.class,0);
                 break;
             case R.id.mine_history:
-                next(goodsActivity.class,0);
+                ToastUtils.show(getActivity(), "敬请期待！");
                 break;
             case R.id.mine_goods_favor:
-                next(OrderActivity.class,1);
+                ToastUtils.show(getActivity(), "敬请期待！");
                 break;
             case R.id.mine_ticket:
                 ToastUtils.show(getActivity(), "敬请期待！");
@@ -133,7 +134,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         if (user == null) {
             mTxtUserName.setText(R.string.to_login);
         } else {
-            mTxtUserName.setText(user.getUsername());
+            mTxtUserName.setText(user.getNickname());
                 if(user.getProfileImg()!=null)
                 { Glide.with(this).load(user.getProfileImg()).into(imgHead);}
 
@@ -161,6 +162,19 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             showUser();
         }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
+            return;
+        }else{  // 在最前端显示 相当于调用了onResume();
+            showUser();
+        }
+    }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

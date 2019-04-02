@@ -3,13 +3,19 @@ package pv.com.pvcloudgo.vc.view.ui.activity.mine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.Response;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import pv.com.pvcloudgo.http.SpotsCallBack;
+import pv.com.pvcloudgo.model.bean.LogoutBean;
+import pv.com.pvcloudgo.utils.Contants;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.app.App;
@@ -59,50 +65,62 @@ public class SettingActivity extends BaseActivity {
     }
 
     public void logout(View view) {
-/**
- *
- * TODO 服务器已关闭，退出改为本地退出方式
- */
-        App application = App.getInstance();
-        application.clearUser();
-        finish();
-        System.exit(0);
-        ToastUtils.show("注销成功！");
 
-//        Map<String, Object> params = new HashMap<>(2);
-//        params.put("token", App.getInstance().getToken());
-//
-//        mHttpHelper.post(Contants.API.LOGOUT, params, new SpotsCallBack<LoginRespMsg<User>>(this) {
-//
-//
-//            @Override
-//            public void onSuccess(Response response, LoginRespMsg<User> userLoginRespMsg) {
-//                if (userLoginRespMsg != null && userLoginRespMsg.getStatus().equals(BaseRespMsg.STATUS_SUCCESS)) {
-//                    App application = App.getInstance();
-//                    application.clearUser();
-//                    finish();
-//                    System.exit(0);
-//                    ToastUtils.show("注销成功！");
-//                }else{
-//                    ToastUtils.show("注销失败！");
-//                }
-//
-//                }
-//
-//                @Override
-//                public void onError (Response response,int code, Exception e){
-//
-//                }
-//
-//                @Override
-//                public void onServerError (Response response,int code, String errmsg){
-//
-//                }
-//            }
-//
-//            );
-//
-//
-        }
+//        App application = App.getInstance();
+//        application.clearUser();
+//        finish();
+//        System.exit(0);
+//        ToastUtils.show("注销成功！");
+
+
+        mHttpHelper.Get(Contants.API.BASE_URL + "logout", App.getInstance().getToken(), new SpotsCallBack<LogoutBean>(this) {
+
+
+                    @Override
+                    public void onSuccess(Response response, LogoutBean LogoutBean) {
+                        if (LogoutBean != null && LogoutBean.getMessage().equals("用户登出成功")) {
+                            App application = App.getInstance();
+                            application.clearUser();
+                            setResult(RESULT_OK);
+                            finish();
+                            ToastUtils.show("用户登出成功！");
+
+
+                        } else if (LogoutBean != null && LogoutBean.getMessage().equals("用户登出失败")) {
+                            ToastUtils.show("登录状态失效，请重新登录");
+                            App application = App.getInstance();
+                            application.clearUser();
+                            setResult(RESULT_OK);
+                            finish();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        App application = App.getInstance();
+                        application.clearUser();
+                        setResult(RESULT_OK);
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show("服务器出错");
+                        App application = App.getInstance();
+                        application.clearUser();
+                        setResult(RESULT_OK);
+                        finish();
+
+                    }
+
+                }
+
+        );
+
 
     }
+
+}

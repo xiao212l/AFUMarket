@@ -33,9 +33,9 @@ import pv.com.pvcloudgo.vc.view.ui.fragment.dummy.TabEntity;
 import pv.com.pvcloudgo.vc.view.ui.fragment.mine.OrderFragment;
 
 
-public class goodsFragment extends BaseFragment{
+public class goodsFragment extends BaseFragment {
 
-//    @Bind(R.id.toolbar)
+    //    @Bind(R.id.toolbar)
 //    Toolbar toolbar;
 //    @Bind(R.id.toolbar_title)
 //    TextView toolbarTitle;
@@ -77,7 +77,6 @@ public class goodsFragment extends BaseFragment{
 //
 //        getActivity().finish();
 //    }
-
 
 
 //    public void login(View view) {
@@ -130,17 +129,23 @@ public class goodsFragment extends BaseFragment{
 //    }
 
 
-
     private void initTab() {
 
-//        for (String title : mTitles) {
-//            mFragments.add(new GoodsFragment2());
+//        GoodsFragment2[] goodsFragment = new GoodsFragment2[4];
+//        Bundle bundle[] = new Bundle[4];
+//        for (int i = 0; i < 4; i++) {
+//
+//            bundle[i] = new Bundle();
+//            bundle[i].putInt("type", i+1);
+//            goodsFragment[i] = new GoodsFragment2();
+//            goodsFragment[i].setArguments(bundle[i]);
+//            mFragments.add(goodsFragment[i]);
 //        }
 
+        mFragments.add(new GoodsFragment1());
         mFragments.add(new GoodsFragment2());
-        mFragments.add(new OrderFragment());
-        mFragments.add(new MineFragment());
-        mFragments.add(new VipFragment());
+        mFragments.add(new GoodsFragment3());
+        mFragments.add(new GoodsFragment4());
 
         mTabEntities.add(new TabEntity(mTitles[0], 0, 0));
         mTabEntities.add(new TabEntity(mTitles[1], 0, 0));
@@ -157,7 +162,7 @@ public class goodsFragment extends BaseFragment{
 
     private void initRecyclerView() {
 
-        BaseActivity Activity = (BaseActivity)getActivity();
+        BaseActivity Activity = (BaseActivity) getActivity();
         mHttpHelper.get(Contants.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>(Activity.mContext) {
             @Override
             public void onBeforeRequest(Request request) {

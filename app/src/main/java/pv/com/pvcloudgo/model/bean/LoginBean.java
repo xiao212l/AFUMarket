@@ -4,13 +4,13 @@ public class LoginBean {
 
     /**
      * status : 10001
-     * message : 用户注册成功
-     * data : {"username":"BeautifulSoup","gender":"male","profileImg":"http://pmt5ma5mu.bkt.clouddn.com/34a19b7f-7b6a-4710-9431-01d3279277cd.jpg","motto":"生命不息,奋斗不止","email":"beautifulsoup@163.com"}
+     * message : 用户登录成功
+     * data : {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXNoMSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNTUzNTc2MDQwLCJpYXQiOjE1NTM1NzI0NDB9.Ga66za23igQ_xJ2Ll0hN0VuuBXncV93H72p90aYKPAI"}
      */
 
     private int status;
     private String message;
-    private pv.com.pvcloudgo.model.bean.User data;
+    private DataBean data;
 
     public int getStatus() {
         return status;
@@ -28,12 +28,27 @@ public class LoginBean {
         this.message = message;
     }
 
-    public User getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(User data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
+    public static class DataBean {
+        /**
+         * Authorization : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXNoMSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNTUzNTc2MDQwLCJpYXQiOjE1NTM1NzI0NDB9.Ga66za23igQ_xJ2Ll0hN0VuuBXncV93H72p90aYKPAI
+         */
+
+        private String Authorization;
+
+        public String getAuthorization() {
+            return Authorization;
+        }
+
+        public void setAuthorization(String Authorization) {
+            this.Authorization = Authorization;
+        }
+    }
 }

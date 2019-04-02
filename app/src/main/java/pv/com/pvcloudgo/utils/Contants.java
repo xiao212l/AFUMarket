@@ -19,7 +19,7 @@ public class Contants {
     public static class API{
 
 
-        public static final String BASE_URL="http://www.qdhdn.cn:8080/";
+        public static final String BASE_URL="http://192.168.123.50:8585/chengfeng/";
         public static final String BASE_HOST="www.qdhdn.cn";
 
         public static final String CAMPAIGN_HOME=BASE_URL + "campaign/recommend";

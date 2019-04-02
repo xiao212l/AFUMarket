@@ -21,7 +21,9 @@ import pv.com.pvcloudgo.http.OkHttpHelper;
 import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.bean.LoginBean;
 import pv.com.pvcloudgo.model.bean.Param;
+import pv.com.pvcloudgo.model.bean.goodsBean;
 import pv.com.pvcloudgo.model.bean.goodsFragmentBean;
+import pv.com.pvcloudgo.model.bean.goodsSimpleBean;
 import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 
@@ -30,22 +32,21 @@ import pv.com.pvcloudgo.vc.base.BaseActivity;
  */
 public class GoodsListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<goodsFragmentBean.good> goodlist;
+    private List<goodsSimpleBean.DataBean> goodlist;
     private final Context context;
     private int type = 0;//0:LinearViewHolder  1:GridViewHolder
 
-    public GoodsListRecyclerViewAdapter(Context context, List<goodsFragmentBean.good> goodlist) {
+    public GoodsListRecyclerViewAdapter(Context context, List<goodsSimpleBean.DataBean> goodlist) {
         this.context = context;
         this.goodlist = goodlist;
 
     }
 
 
-    public void setGoodlist(List<goodsFragmentBean.good> goodlist){
+    public void setGoodlist(List<goodsSimpleBean.DataBean> goodlist){
         this.goodlist.addAll(goodlist);
     }
 
-    //点击切换布局的时候通过这个方法设置type
     public void setType(int type) {
         this.type = type;
     }
@@ -58,10 +59,8 @@ public class GoodsListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
             baseView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_listview_goods_list, parent, false);
             LinearViewHolder linearViewHolder = new LinearViewHolder(baseView);
             return linearViewHolder;
-        } else {
+        } else{
             View footer = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_goods_foot, parent, false);
-//            GridViewHolder gridViewHolder = new GridViewHolder(baseView);
-//            return gridViewHolder;
             RecyclerView.ViewHolder viewHolder = new FooterHolder(footer);
             return viewHolder;
 
@@ -72,44 +71,23 @@ public class GoodsListRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
 
-        if (holder instanceof LinearViewHolder) {
+        if (holder instanceof LinearViewHolder&&position<goodlist.size()) {
 //            ToastUtils.show("" + position);
 
             LinearViewHolder linearViewHolder = (LinearViewHolder) holder;
-            linearViewHolder.tvName.setText(goodlist.get(0).getName());
-            linearViewHolder.tvPriceYZ.setText("拼购价：¥ " + goodlist.get(0).getSpellPrice());
-            linearViewHolder.tvPrice.setText("单买价：¥ 4199");
-            Glide.with(context).load(goodlist.get(0).getMainImage()).into(linearViewHolder.iv);
+            linearViewHolder.tvName.setText(goodlist.get(position).getName());
+            linearViewHolder.tvPriceYZ.setText("好评率： "  + (goodlist.get(position).getGoodRatio()*100) + "%");
+            linearViewHolder.tvPrice.setText(goodlist.get(position).getDetail());
+//            Glide.with(context).load(goodlist.get(position).getMainImage()).into(linearViewHolder.iv);
 
+        }else if(goodlist.size() % 6 != 0){
+            FooterHolder viewHolder = (FooterHolder)holder;
+            viewHolder.progressBar.setVisibility(View.INVISIBLE);
+            viewHolder.message.setText("-------------到头了-------------");
         }
 
 
     }
-
-
-//        if (goodlist!=null){
-//
-//
-//            linearViewHolder.iv.setImageResource(R.drawable.pp_shoes);
-//        }else {
-//
-//            LinearViewHolder linearViewHolder= (LinearViewHolder) holder;
-//            linearViewHolder.tvName.setText("小米8顶配版 双曲面屏 小米商城黑色现货购买 赠送保护套");
-//            linearViewHolder.tvPriceYZ.setText("拼购价：¥2298 ");
-//            linearViewHolder.tvPrice.setText("单买价：¥ 4199");
-//            linearViewHolder.iv.setImageResource(R.drawable.pp_shoes);
-
-//            GridViewHolder gridViewHolder= (GridViewHolder) holder;
-//            gridViewHolder.tvName.setText("小米note2顶配版 双曲面屏 小米商城黑色现货购买 赠送保护套");
-//            gridViewHolder.tvPriceYZ.setText("颐众价：¥ 2298");
-//            gridViewHolder.tvPrice.setText("市场价：¥ 2399");
-//           gridViewHolder.iv.setImageResource(R.drawable.pp_shoes);
-//            if (position%2==0)
-//                gridViewHolder.rightView.setVisibility(View.VISIBLE);
-//            else
-//                gridViewHolder.rightView.setVisibility(View.GONE);
-//        }
-//
 
 
     @Override

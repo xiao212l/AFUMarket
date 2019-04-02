@@ -18,11 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/list_item_user_avater"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/pg_shoes" />
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -69,7 +65,7 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
-        <com.facebook.drawee.view.DraweeView
+        <ImageView
             android:id="@+id/item_ff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

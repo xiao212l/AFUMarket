@@ -156,7 +156,7 @@ public class OMYOActivity extends BaseActivity {
 
 
                 App application = App.getInstance();
-                application.putUser(userLoginRespMsg.getData(), userLoginRespMsg.getToken());
+                application.putUser(userLoginRespMsg.getData());
 
                 if (application.getIntent() == null) {
                     setResult(RESULT_OK);

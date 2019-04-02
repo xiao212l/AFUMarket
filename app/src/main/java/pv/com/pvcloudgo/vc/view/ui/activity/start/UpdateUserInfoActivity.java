@@ -75,7 +75,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
         String json;
         if (choise != null) {
             json = "{\n" +
-                    "\"username\":" + "\"" + user.getUsername() + "\"" + ",\n" +
+                    "\"username\":" + "\"" + user.getNickname() + "\"" + ",\n" +
                     "\"id\":" + user.getId() + ",\n" +
                     "\"password\":" + "\"" + user.getPassword() + "\"" +
                     (id.getText().toString().trim().isEmpty() ? "" : (",\n"+"\"idcard\":" + "\"" + id.getText().toString().trim() + "\"" )) +
@@ -86,7 +86,7 @@ public class UpdateUserInfoActivity extends BaseActivity {
                     "}";
         } else {
             json = "{\n" +
-                    "\"username\":" + "\"" + user.getUsername() + "\"" + ",\n" +
+                    "\"username\":" + "\"" + user.getNickname() + "\"" + ",\n" +
                     "\"id\":" + user.getId() + ",\n" +
                     "\"password\":" + "\"" + user.getPassword() + "\"" +
                     (id.getText().toString().trim().isEmpty() ? "" : ( ",\n"+"\"idcard\":" + "\"" + id.getText().toString().trim() + "\"" )) +

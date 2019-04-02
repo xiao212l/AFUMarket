@@ -66,7 +66,13 @@ public class App extends Application {
     }
 
 
-    public void putUser(User user, String token) {
+    public void putUser(User user) {
+        this.user = user;
+        UserLocalData.putUser(this, user);
+//        UserLocalData.putToken(this, token);
+    }
+
+    public void putUser(User user,String token) {
         this.user = user;
         UserLocalData.putUser(this, user);
         UserLocalData.putToken(this, token);
@@ -86,6 +92,9 @@ public class App extends Application {
         return UserLocalData.getToken(this);
     }
 
+    public void putToken(String token){
+        UserLocalData.putToken(this, token);
+    }
 
     private Intent intent;
 

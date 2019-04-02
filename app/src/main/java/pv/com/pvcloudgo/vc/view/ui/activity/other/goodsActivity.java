@@ -87,54 +87,54 @@ public class goodsActivity extends BaseActivity {
         finish();
     }
 
-    public void login(View view) {
-
-
-        String phone = null;
-
-        String pwd = null;
-
-
-        Map<String, Object> params = new HashMap<>(2);
-        params.put("phone", phone);
-        params.put("password", DESUtil.encode(Contants.DES_KEY, pwd));
-
-        mHttpHelper.post(Contants.API.LOGIN, params, new SpotsCallBack<LoginRespMsg<User>>(this) {
-
-
-            @Override
-            public void onSuccess(Response response, LoginRespMsg<User> userLoginRespMsg) {
-
-
-                App application = App.getInstance();
-                application.putUser(userLoginRespMsg.getData(), userLoginRespMsg.getToken());
-
-                if (application.getIntent() == null) {
-                    setResult(RESULT_OK);
-                    finish();
-                } else {
-
-                    application.jumpToTargetActivity(mContext);
-                    finish();
-
-                }
-
-
-            }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-
-            }
-        });
-
-
-    }
+//    public void login(View view) {
+//
+//
+//        String phone = null;
+//
+//        String pwd = null;
+//
+//
+//        Map<String, Object> params = new HashMap<>(2);
+//        params.put("phone", phone);
+//        params.put("password", DESUtil.encode(Contants.DES_KEY, pwd));
+//
+//        mHttpHelper.post(Contants.API.LOGIN, params, new SpotsCallBack<LoginRespMsg<User>>(this) {
+//
+//
+//            @Override
+//            public void onSuccess(Response response, LoginRespMsg<User> userLoginRespMsg) {
+//
+//
+//                App application = App.getInstance();
+//                application.putUser(userLoginRespMsg.getData());
+//
+//                if (application.getIntent() == null) {
+//                    setResult(RESULT_OK);
+//                    finish();
+//                } else {
+//
+//                    application.jumpToTargetActivity(mContext);
+//                    finish();
+//
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onError(Response response, int code, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onServerError(Response response, int code, String errmsg) {
+//
+//            }
+//        });
+//
+//
+//    }
 
     private void initTab() {
 

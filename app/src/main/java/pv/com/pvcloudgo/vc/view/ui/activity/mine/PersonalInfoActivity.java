@@ -117,12 +117,15 @@ public class PersonalInfoActivity extends BaseActivity {
             Glide.with(this).load(user.getProfileImg()).into(userAvater);
         }
 
-        Utils.bindStrText(userNicknameTv, user.getUsername());
+        Utils.bindStrText(userNicknameTv, user.getNickname());
         Utils.bindStrText(userEmailTv, user.getEmail()==null? "未设置" : user.getEmail());
         Utils.bindStrText(userSexTv, user.getGender()==null?"未设置":(user.getGender().equals("male") ? "男" : "女"));
         Utils.bindStrText(userBirthTv, user.getBirthday()==null? "未设置" : user.getBirthday());
         Utils.bindStrText(userWorkTv, user.getPhone()==null ? "未设置" : user.getPhone());
         Utils.bindStrText(userMottoTv, user.getMotto()==null? "未设置" : user.getMotto());
+
+
+
         updateButton.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -224,6 +227,7 @@ public class PersonalInfoActivity extends BaseActivity {
     }
 
 
+
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/png");
@@ -266,8 +270,8 @@ public class PersonalInfoActivity extends BaseActivity {
                         if (LoginBean != null && LoginBean.getMessage().equals("用户登录成功")) {
 
                             ToastUtils.show(LoginBean.getMessage());
-                            App application = App.getInstance();
-                            application.putUser(LoginBean.getData(), LoginBean.getData().getToken());
+//                            App application = App.getInstance();
+//                            application.putUser(LoginBean.getData(), LoginBean.getData().getToken());
                             setResult(RESULT_OK);
                             finish();
 

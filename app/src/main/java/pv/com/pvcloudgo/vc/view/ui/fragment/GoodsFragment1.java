@@ -2,7 +2,6 @@ package pv.com.pvcloudgo.vc.view.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,28 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.okhttp.Response;
 
 import java.util.List;
-import java.util.Map;
 
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.app.App;
-import pv.com.pvcloudgo.http.OkHttpHelper;
 import pv.com.pvcloudgo.http.SpotsCallBack;
-import pv.com.pvcloudgo.model.bean.Param;
-import pv.com.pvcloudgo.model.bean.goodsBean;
-import pv.com.pvcloudgo.model.bean.goodsFragmentBean;
 import pv.com.pvcloudgo.model.bean.goodsSimpleBean;
 import pv.com.pvcloudgo.utils.Contants;
-import pv.com.pvcloudgo.utils.ToastUtil;
 import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.adapter.GoodsListRecyclerViewAdapter;
-import pv.com.pvcloudgo.vc.base.BaseActivity;
 
-public class GoodsFragment2 extends BaseFragment implements View.OnClickListener {
+public class GoodsFragment1 extends BaseFragment implements View.OnClickListener {
 
     private List<goodsSimpleBean.DataBean>  goodlist;
 
