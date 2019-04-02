@@ -45,7 +45,7 @@ public class GoodsFragment3 extends BaseFragment implements View.OnClickListener
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_goods, container, false);
+        return inflater.inflate(R.layout.fragment_goods3, container, false);
 
     }
 
@@ -54,7 +54,7 @@ public class GoodsFragment3 extends BaseFragment implements View.OnClickListener
 
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerview);
+        recyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerview3);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setHasFixedSize(true);
 

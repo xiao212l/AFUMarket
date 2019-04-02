@@ -141,11 +141,15 @@ public class goodsFragment extends BaseFragment {
 //            goodsFragment[i].setArguments(bundle[i]);
 //            mFragments.add(goodsFragment[i]);
 //        }
+        GoodsFragment1 goods1 = new GoodsFragment1();
+        GoodsFragment2 goods2 = new GoodsFragment2();
+        GoodsFragment3 goods3 = new GoodsFragment3();
+        GoodsFragment4 goods4 = new GoodsFragment4();
 
-        mFragments.add(new GoodsFragment1());
-        mFragments.add(new GoodsFragment2());
-        mFragments.add(new GoodsFragment3());
-        mFragments.add(new GoodsFragment4());
+        mFragments.add(goods1);
+        mFragments.add(goods2);
+        mFragments.add(goods3);
+        mFragments.add(goods4);
 
         mTabEntities.add(new TabEntity(mTitles[0], 0, 0));
         mTabEntities.add(new TabEntity(mTitles[1], 0, 0));
@@ -154,7 +158,7 @@ public class goodsFragment extends BaseFragment {
 
 
         mViewPager.setAdapter(new MyPagerAdapter(getActivity().getSupportFragmentManager()));
-
+        //mViewPager.setOffscreenPageLimit(4);
         tl_2();
 
     }
