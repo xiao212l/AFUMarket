@@ -2,9 +2,13 @@ package pv.com.pvcloudgo.vc.view.ui.activity.addr;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.okhttp.Response;
 
@@ -16,6 +20,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pv.com.pvcloudgo.R;
+import pv.com.pvcloudgo.model.bean.addressBean;
+import pv.com.pvcloudgo.model.bean.addressMessageBean;
 import pv.com.pvcloudgo.vc.adapter.AddressAdapter;
 import pv.com.pvcloudgo.vc.adapter.decoration.DividerItemDecoration;
 import pv.com.pvcloudgo.app.App;
@@ -37,6 +43,22 @@ public class AddressListActivity extends BaseActivity {
     @Bind(R.id.recycler_view)
      RecyclerView mRecyclerview;
 
+    @Bind(R.id.address_add)
+    FloatingActionButton addButton;
+
+//    @Bind(R.id.toolbar)
+//    Toolbar toolbar;
+//    @Bind(R.id.toolbar_title)
+//    TextView toolbarTitle;
+//    @Bind(R.id.toolbar_left_logo)
+//    ImageView toolbarLeftLogo;
+//    @Bind(R.id.toolbar_logo)
+//    ImageView toolbarLogo;
+//    @Bind(R.id.toolbar_left_title)
+//    TextView toolbarLeftTitle;
+//    @Bind(R.id.toolbar_right_title)
+//    TextView toolbarRightTitle;
+
      AddressAdapter mAdapter;
 
 
@@ -49,6 +71,15 @@ public class AddressListActivity extends BaseActivity {
         initToolbar();
 
         initAddress();
+
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toAddActivity();
+            }
+        });
 
 
     }
@@ -67,10 +98,14 @@ public class AddressListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                toAddActivity();
+
             }
         });
-
+//        toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+//        setupToolbar(toolbar, true);
+//
+//        toolbarTitle.setText("收货地址");
     }
 
 
@@ -89,14 +124,13 @@ public class AddressListActivity extends BaseActivity {
     private void initAddress(){
 
 
-        Map<String,Object> params = new HashMap<>(1);
-        params.put("user_id", App.getInstance().getUser().getId());
 
-        mHttpHelper.get(Contants.API.ADDRESS_LIST, params, new SpotsCallBack<List<Address>>(this) {
+        mHttpHelper.Get(Contants.API.BASE_URL +"shipping/listall", App.getInstance().getToken(), new SpotsCallBack<addressMessageBean>(this) {
 
 
             @Override
-            public void onSuccess(Response response, List<Address> addresses) {
+            public void onSuccess(Response response, addressMessageBean addressMessage) {
+                List<addressBean> addresses = addressMessage.getData();
                 showAddress(addresses);
             }
 
@@ -113,41 +147,39 @@ public class AddressListActivity extends BaseActivity {
     }
 
 
-    private void showAddress(List<Address> addresses) {
+    private void showAddress(List<addressBean> addresses) {
 
-        Collections.sort(addresses);
         if(mAdapter ==null) {
             mAdapter = new AddressAdapter(this, addresses, new AddressAdapter.AddressLisneter() {
                 @Override
-                public void setDefault(Address address) {
+                public void setDefault(addressBean address) {
 
                     updateAddress(address);
 
                 }
+
+                @Override
+                public void setDefault(Address address) {
+
+                }
+
             });
             mRecyclerview.setAdapter(mAdapter);
             mRecyclerview.setLayoutManager(new LinearLayoutManager(AddressListActivity.this));
             mRecyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         }
         else{
-            mAdapter.refreshData(addresses);
+           // mAdapter.refreshData(addresses);
             mRecyclerview.setAdapter(mAdapter);
         }
 
     }
 
 
-    public void updateAddress(Address address){
+    public void updateAddress(addressBean address){
 
-        Map<String,Object> params = new HashMap<>(1);
-        params.put("id",address.getId());
-        params.put("consignee",address.getConsignee());
-        params.put("phone",address.getPhone());
-        params.put("addr",address.getAddr());
-        params.put("zip_code",address.getZipCode());
-        params.put("is_default",address.getIsDefault());
 
-        mHttpHelper.post(Contants.API.ADDRESS_UPDATE, params, new SpotsCallBack<BaseRespMsg>(this) {
+        mHttpHelper.get(Contants.API.ADDRESS_UPDATE,  new SpotsCallBack<BaseRespMsg>(this) {
 
             @Override
             public void onSuccess(Response response, BaseRespMsg baseRespMsg) {

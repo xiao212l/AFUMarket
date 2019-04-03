@@ -1,9 +1,10 @@
 package pv.com.pvcloudgo.vc.view.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,37 +13,41 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jcodecraeer.xrecyclerview.ProgressStyle;
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
+import com.squareup.okhttp.Response;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pv.com.pvcloudgo.app.App;
+import pv.com.pvcloudgo.http.SpotsCallBack;
+import pv.com.pvcloudgo.model.bean.CartBean;
+import pv.com.pvcloudgo.utils.Contants;
+import pv.com.pvcloudgo.utils.ToastUtil;
+import pv.com.pvcloudgo.utils.ToastUtils;
+import pv.com.pvcloudgo.vc.adapter.CartRecyclerViewAdapter;
 import pv.com.pvcloudgo.vc.view.ui.activity.order.CreateOrderActivity;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.vc.adapter.ShopCartAdapter;
 import pv.com.pvcloudgo.model.bean.ShoppingCart;
-import pv.com.pvcloudgo.vc.view.ui.fragment.dummy.DummyContent;
 import pv.com.pvcloudgo.utils.CartProvider;
 
-import static com.umeng.socialize.utils.DeviceConfig.context;
-
+import static pv.com.pvcloudgo.vc.adapter.CartRecyclerViewAdapter.checkgroup;
 
 public class CartFragment extends BaseFragment implements View.OnClickListener {
 
-
+    private CartRecyclerViewAdapter adapter;
     public static final int ACTION_EDIT = 1;
     public static final int ACTION_CAMPLATE = 2;
     private static final String TAG = "CartFragment";
     @Bind(R.id.recycler_view)
-    XRecyclerView mRecyclerView;
+    RecyclerView recyclerView;
     @Bind(R.id.checkbox_all)
     CheckBox mCheckBox;
     @Bind(R.id.btn_order)
     Button mBtnOrder;
-    @Bind(R.id.btn_del)
+    @Bind(R.id.btn_delete)
     Button mBtnDel;
     @Bind(R.id.toolbar_title)
     TextView toolbarTitle;
@@ -63,6 +68,8 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
     private ShopCartAdapter mAdapter;
     private CartProvider cartProvider;
 
+    private Context context;
+
 
     @Override
     public View createView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,46 +80,26 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void init() {
 
-        initXRecyclerView();
-        cartProvider = new CartProvider(getActivity());
-
         changeToolbar();
-        showData();
-    }
-
-    private void initXRecyclerView() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mAdapter=new ShopCartAdapter(DummyContent.ITEMS, null);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+        mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                //refresh data here
-                new Handler(getActivity().getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRecyclerView.refreshComplete();
+            public void onClick(View v) {
+                CheckBox V = (CheckBox) v;
+                if(V.isChecked()){
+                    for(CheckBox check:checkgroup){
+                        check.setChecked(true);
                     }
-                },3000);
-            }
-
-            @Override
-            public void onLoadMore() {
-                // load more data here
-                new Handler(getActivity().getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mRecyclerView.loadMoreComplete();
+                }else{
+                    for(CheckBox check:checkgroup){
+                        check.setChecked(false);
                     }
-                },3000);
+                }
             }
         });
-        mRecyclerView.setRefreshProgressStyle(ProgressStyle.BallBeat);
-        mRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallPulseSync);
+
     }
 
-
-    @OnClick(R.id.btn_del)
+    @OnClick(R.id.btn_delete)
     public void delCart(View view) {
 
     }
@@ -126,78 +113,74 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private void showData() {
-
-
-        List<ShoppingCart> carts = cartProvider.getAll();
-
-//        mAdapter = new CartAdapter(getActivity(), carts, mCheckBox, mTextTotal);
-//
-//        mRecyclerView.setAdapter(mAdapter);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-
-
-
-    }
-
 
     public void refData() {
 
-        List<ShoppingCart> carts = cartProvider.getAll();
+        recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setHasFixedSize(true);
+
+        mHttpHelper.Get(Contants.API.BASE_URL + "cart/listall"
+                , App.getInstance().getToken(), new SpotsCallBack<CartBean>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response response, CartBean CartBean) {
+                        if (CartBean != null && CartBean.getMessage().equals("请求成功")) {
+
+                            adapter = new CartRecyclerViewAdapter(this.mContext , CartBean.getData().getCartItems());
+                            recyclerView.setAdapter(adapter);
+
+                        } else {
+                            ToastUtils.show("请求失败");
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        ToastUtils.show("请求失败");
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show("请求失败,服务器无响应");
+                    }
+                });
+
 
 
     }
 
 
     public void changeToolbar() {
-//        toolbarLeftLogo.setImageResource(R.drawable.ic);
         toolbarTitle.setText(R.string.cart);
         toolbarRightTitle.setText("编辑");
+        toolbarLeftTitle.setText("刷新");
+        toolbarLeftTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refData();
+            }
+        });
+
+
         toolbarRightTitle.setOnClickListener(this);
-//        toolbarLeftLogo.setVisibility(View.VISIBLE);
-//        toolbarLeftLogo.setImageResource(R.drawable.ic_s_msg);
 
     }
-
-
-    private void showDelControl() {
-        toolbarRightTitle.setText("完成");
-        mBtnOrder.setVisibility(View.GONE);
-        mBtnDel.setVisibility(View.VISIBLE);
-        toolbarRightTitle.setTag(ACTION_CAMPLATE);
-
-        mCheckBox.setChecked(false);
-
-    }
-
-    private void hideDelControl() {
-
-        mBtnOrder.setVisibility(View.VISIBLE);
-
-
-        mBtnDel.setVisibility(View.GONE);
-        toolbarRightTitle.setText("编辑");
-        toolbarRightTitle.setTag(ACTION_EDIT);
-
-
-        mCheckBox.setChecked(true);
-    }
-
 
     @Override
     public void onClick(View v) {
-
-
-        int action = (int) v.getTag();
-        if (ACTION_EDIT == action) {
-
-            showDelControl();
-        } else if (ACTION_CAMPLATE == action) {
-
-            hideDelControl();
+        TextView V = (TextView) v;
+        if(mBtnDel.getVisibility()==View.INVISIBLE){
+            mBtnDel.setVisibility(View.VISIBLE);
+            V.setText("完成");
+        }else{
+            mBtnDel.setVisibility(View.INVISIBLE);
+            V.setText("编辑");
+            mCheckBox.setChecked(false);
+            for(CheckBox check:checkgroup){
+                check.setChecked(false);
+            }
         }
-
 
     }
 
@@ -214,4 +197,15 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
+
+        refData();
+
+    }
+
 }

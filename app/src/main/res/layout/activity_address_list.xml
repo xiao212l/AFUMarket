@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/bg_color"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <pv.com.pvcloudgo.vc.widget.PVToolBar
         android:id="@id/toolbar"
@@ -14,20 +14,24 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:contentInsetEnd="56dp"
-        app:title="@string/my_addresses"
-        app:rightButtonIcon="@drawable/icon_add"
+        app:title="              收货地址"
         />
-
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/address_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/icon_add" />
 
 
 </LinearLayout>

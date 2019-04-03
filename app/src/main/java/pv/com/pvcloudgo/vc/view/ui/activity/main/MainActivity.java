@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity {
 
                 if(tabId==getString(R.string.cart)){
 
-                    refData();
+//                    refData();
                 }
 
             }
@@ -129,6 +129,12 @@ public class MainActivity extends BaseActivity {
 
         return  view;
     }
+
+
+
+
+
+
 
 
 }

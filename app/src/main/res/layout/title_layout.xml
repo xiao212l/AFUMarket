@@ -36,6 +36,8 @@
         android:id="@+id/toolbar_left_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 

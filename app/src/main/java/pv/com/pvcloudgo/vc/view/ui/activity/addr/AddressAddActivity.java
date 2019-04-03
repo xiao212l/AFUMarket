@@ -91,6 +91,8 @@ public class AddressAddActivity extends BaseActivity {
         });
 
     }
+
+
     private void init() {
 
         initProvinceDatas();
@@ -114,14 +116,11 @@ public class AddressAddActivity extends BaseActivity {
 
 
 
-
-
     }
 
 
 
-    protected void initProvinceDatas()
-    {
+    protected void initProvinceDatas() {
 
         AssetManager asset = getAssets();
         try {
@@ -149,11 +148,9 @@ public class AddressAddActivity extends BaseActivity {
                List<CityModel> cities =  p.getCityList();
                ArrayList<String> cityStrs = new ArrayList<>(cities.size()); //城市List
 
-
                for (CityModel c :cities){
 
                    cityStrs.add(c.getName()); // 把城市名称放入 cityStrs
-
 
                    ArrayList<ArrayList<String>> dts = new ArrayList<>(); // 地区 List
 
@@ -173,7 +170,6 @@ public class AddressAddActivity extends BaseActivity {
 
             }
         }
-
 
 
     }
@@ -200,6 +196,8 @@ public class AddressAddActivity extends BaseActivity {
         params.put("phone",phone);
         params.put("addr",address);
         params.put("zip_code","000000");
+
+
 
         mHttpHelper.post(Contants.API.ADDRESS_CREATE, params, new SpotsCallBack<BaseRespMsg>(this) {
 

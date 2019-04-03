@@ -26,6 +26,7 @@ import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.base.BaseRespMsg;
 import pv.com.pvcloudgo.model.msg.MineMsg;
 import pv.com.pvcloudgo.utils.ToastUtil;
+import pv.com.pvcloudgo.vc.view.ui.activity.addr.AddressListActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.OrderActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.PersonalInfoActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.SettingActivity;
@@ -118,7 +119,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 ToastUtils.show(getActivity(), "敬请期待！");
                 break;
             case R.id.mine_address:
-                next(OrderActivity.class,3);
+                next(AddressListActivity.class,0);
                 break;
             case R.id.txt_username:
             case R.id.img_head:
