@@ -32,6 +32,8 @@ import pv.com.pvcloudgo.vc.view.ui.activity.mine.PersonalInfoActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.mine.SettingActivity;
 import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.utils.Utils;
+import pv.com.pvcloudgo.vc.view.ui.activity.other.DetailActivity;
+import pv.com.pvcloudgo.vc.view.ui.activity.other.WareDetailActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.other.goodsActivity;
 import pv.com.pvcloudgo.vc.widget.pulldownview.PullToZoomScrollViewEx;
 import pv.com.pvcloudgo.utils.ToastUtils;
@@ -113,6 +115,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 ToastUtils.show(getActivity(), "敬请期待！");
                 break;
             case R.id.mine_goods_favor:
+                next(DetailActivity.class,0);
+
                 ToastUtils.show(getActivity(), "敬请期待！");
                 break;
             case R.id.mine_ticket:

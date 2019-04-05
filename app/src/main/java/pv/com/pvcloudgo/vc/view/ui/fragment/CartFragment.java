@@ -208,4 +208,15 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {   // 不在最前端显示 相当于调用了onPause();
+            return;
+        }else{  // 在最前端显示 相当于调用了onResume();
+            refData();
+        }
+    }
+
+
 }

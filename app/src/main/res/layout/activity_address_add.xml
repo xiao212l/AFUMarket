@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/bg_color"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <pv.com.pvcloudgo.vc.widget.PVToolBar
         android:id="@id/toolbar"
@@ -14,101 +14,90 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:contentInsetEnd="56dp"
-        app:title="@string/add_addresses"
         app:rightButtonText="保存"
-        />
-
+        app:title="@string/add_addresses" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="40dp"
         android:background="@drawable/selector_view_block"
+        android:orientation="vertical"
         android:padding="@dimen/largePadding">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/largePadding"
-            android:paddingBottom="@dimen/largePadding"
             android:orientation="horizontal"
-            >
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:text="收件人"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
 
                 />
 
-            <View
-                style="@style/line_horizontal"/>
+            <View style="@style/line_horizontal" />
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
                 android:id="@+id/edittxt_consignee"
+                style="@style/editText_base"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/editText_base"
-                android:hint="请输入收件人姓名（必填）"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                />
-
+                android:layout_weight="1"
+                android:hint="请输入收件人姓名（必填）" />
 
 
         </LinearLayout>
 
-        <View
-            style="@style/line_vertical"
+        <View style="@style/line_vertical"
 
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/largePadding"
-            android:paddingBottom="@dimen/largePadding"
             android:orientation="horizontal"
-            >
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:text="联系电话"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
 
                 />
 
-            <View
-                style="@style/line_horizontal"/>
+            <View style="@style/line_horizontal" />
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
                 android:id="@+id/edittxt_phone"
+                style="@style/editText_base"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/editText_base"
-                android:hint="请输入收件人电话（必填）"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:inputType="phone"/>
-
+                android:layout_weight="1"
+                android:hint="请输入收件人电话（必填）"
+                android:inputType="phone" />
 
 
         </LinearLayout>
 
-        <View
-            style="@style/line_vertical"
+        <View style="@style/line_vertical"
 
             />
 
@@ -117,134 +106,113 @@
             android:id="@+id/ll_city_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/largePadding"
-            android:paddingBottom="@dimen/largePadding"
             android:orientation="horizontal"
-            >
-
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="省，市，区"
+                android:layout_marginRight="10dp"
+                android:text="选择城市"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
-
 
                 />
-            <View
-                style="@style/line_horizontal"/>
 
+            <View style="@style/line_horizontal" />
 
             <TextView
                 android:id="@+id/txt_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:drawableRight="@drawable/icon_right_64"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/black"
                 android:layout_weight="1"
+                android:drawableRight="@drawable/icon_right_64"
+                android:gravity="center_vertical"
                 android:hint="（可选）"
-                />
-
-
-
-
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
-        <View
-            style="@style/line_vertical"
+        <View style="@style/line_vertical"
 
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/largePadding"
-            android:paddingBottom="@dimen/largePadding"
             android:orientation="horizontal"
-            >
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:text="具体地址"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
 
                 />
 
-            <View
-                style="@style/line_horizontal"/>
+            <View style="@style/line_horizontal" />
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
                 android:id="@+id/edittxt_addressdetail"
+                style="@style/editText_base"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/editText_base"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:hint="（必填）"
-               />
-
+                android:layout_weight="1"
+                android:hint="（必填）" />
 
 
         </LinearLayout>
 
 
-        <View
-            style="@style/line_vertical"
+        <View style="@style/line_vertical"
 
             />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/largePadding"
-            android:paddingBottom="@dimen/largePadding"
             android:orientation="horizontal"
-            >
+            android:paddingTop="@dimen/largePadding"
+            android:paddingBottom="@dimen/largePadding">
 
 
             <TextView
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:text="邮编"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:layout_marginRight="10dp"
 
                 />
 
-            <View
-                style="@style/line_horizontal"/>
+            <View style="@style/line_horizontal" />
 
             <pv.com.pvcloudgo.vc.widget.ClearEditText
-                android:id="@+id/edittxt_add"
+                android:id="@+id/edittxt_zip"
+                style="@style/editText_base"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/editText_base"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:hint="（必填）"
-                />
-
+                android:layout_weight="1"
+                android:hint="（必填）" />
 
 
         </LinearLayout>
 
 
-
-
     </LinearLayout>
 
 
-
-
-    </LinearLayout>
+</LinearLayout>

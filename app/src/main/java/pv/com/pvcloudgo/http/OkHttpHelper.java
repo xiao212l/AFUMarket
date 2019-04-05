@@ -95,6 +95,20 @@ public class OkHttpHelper {
         request(request, callback);
 
     }
+
+    public void Post(String url, String json,String Token, BaseCallback callback) {
+
+        Request.Builder builder = new Request.Builder()
+                .url(url);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),json);
+
+        builder.post(body);
+        Request request = builder.addHeader("Authorization","Bearer "+Token).build();
+        request(request, callback);
+    }
+
+
+
     public void post(String url, Map<String, Object> param, BaseCallback callback) {
 
         Request request = buildPostRequest(url, param);
@@ -112,6 +126,9 @@ public class OkHttpHelper {
         Request request = builder.build();
         request(request, callback);
     }
+
+
+
 
 
     public void put(String url, String json, BaseCallback callback) {

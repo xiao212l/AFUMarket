@@ -22,12 +22,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.app.App;
+import pv.com.pvcloudgo.model.bean.addressCreateBean;
 import pv.com.pvcloudgo.model.city.XmlParserHandler;
 import pv.com.pvcloudgo.model.city.model.CityModel;
 import pv.com.pvcloudgo.model.city.model.DistrictModel;
 import pv.com.pvcloudgo.model.city.model.ProvinceModel;
 import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.base.BaseRespMsg;
+import pv.com.pvcloudgo.utils.ToastUtil;
+import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
 import pv.com.pvcloudgo.vc.widget.ClearEditText;
 import pv.com.pvcloudgo.vc.widget.PVToolBar;
@@ -37,23 +40,26 @@ import pv.com.pvcloudgo.utils.Contants;
 public class AddressAddActivity extends BaseActivity {
 
 
-    private  OptionsPickerView  mCityPikerView; //https://github.com/saiwu-bigkoo/Android-PickerView
+    private OptionsPickerView mCityPikerView; //https://github.com/saiwu-bigkoo/Android-PickerView
 
 
     @Bind(R.id.txt_address)
-     TextView mTxtAddress;
+    TextView mTxtAddress;
 
     @Bind(R.id.edittxt_consignee)
-     ClearEditText mEditConsignee;
+    ClearEditText mEditConsignee;
 
     @Bind(R.id.edittxt_phone)
-     ClearEditText mEditPhone;
+    ClearEditText mEditPhone;
 
-    @Bind(R.id.edittxt_add)
-     ClearEditText mEditAddr;
+    @Bind(R.id.edittxt_addressdetail)
+    ClearEditText mEditAddr;
+
+    @Bind(R.id.edittxt_zip)
+    ClearEditText mEditZip;
 
     @Bind(R.id.toolbar)
-     PVToolBar mToolBar;
+    PVToolBar mToolBar;
 
 
     private List<ProvinceModel> mProvinces;
@@ -63,16 +69,17 @@ public class AddressAddActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_add);
         ButterKnife.bind(this);
 
-
         initToolbar();
         init();
+
     }
 
-    private void initToolbar(){
+    private void initToolbar() {
 
         mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +87,7 @@ public class AddressAddActivity extends BaseActivity {
                 finish();
             }
         });
+
 
         mToolBar.setRightButtonOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +98,7 @@ public class AddressAddActivity extends BaseActivity {
             }
         });
 
+
     }
 
 
@@ -99,25 +108,22 @@ public class AddressAddActivity extends BaseActivity {
 
         mCityPikerView = new OptionsPickerView(this);
 
-        mCityPikerView.setPicker((ArrayList) mProvinces,mCities,mDistricts,true);
+        mCityPikerView.setPicker((ArrayList) mProvinces, mCities, mDistricts, true);
         mCityPikerView.setTitle("选择城市");
-        mCityPikerView.setCyclic(false,false,false);
+        mCityPikerView.setCyclic(false, false, false);
         mCityPikerView.setOnoptionsSelectListener(new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3) {
 
-                String addresss = mProvinces.get(options1).getName() +"  "
-                        + mCities.get(options1).get(option2)+"  "
+                String addresss = mProvinces.get(options1).getName() + "  "
+                        + mCities.get(options1).get(option2) + "  "
                         + mDistricts.get(options1).get(option2).get(options3);
                 mTxtAddress.setText(addresss);
 
             }
         });
 
-
-
     }
-
 
 
     protected void initProvinceDatas() {
@@ -141,32 +147,31 @@ public class AddressAddActivity extends BaseActivity {
 
         }
 
-        if(mProvinces !=null){
+        if (mProvinces != null) {
 
-            for (ProvinceModel p :mProvinces){
+            for (ProvinceModel p : mProvinces) {
 
-               List<CityModel> cities =  p.getCityList();
-               ArrayList<String> cityStrs = new ArrayList<>(cities.size()); //城市List
+                List<CityModel> cities = p.getCityList();
+                ArrayList<String> cityStrs = new ArrayList<>(cities.size()); //城市List
 
-               for (CityModel c :cities){
+                for (CityModel c : cities) {
 
-                   cityStrs.add(c.getName()); // 把城市名称放入 cityStrs
+                    cityStrs.add(c.getName()); // 把城市名称放入 cityStrs
 
-                   ArrayList<ArrayList<String>> dts = new ArrayList<>(); // 地区 List
+                    ArrayList<ArrayList<String>> dts = new ArrayList<>(); // 地区 List
 
-                   List<DistrictModel> districts = c.getDistrictList();
-                   ArrayList<String> districtStrs = new ArrayList<>(districts.size());
+                    List<DistrictModel> districts = c.getDistrictList();
+                    ArrayList<String> districtStrs = new ArrayList<>(districts.size());
 
-                   for (DistrictModel d : districts){
-                       districtStrs.add(d.getName()); // 把城市名称放入 districtStrs
-                   }
-                   dts.add(districtStrs);
+                    for (DistrictModel d : districts) {
+                        districtStrs.add(d.getName()); // 把城市名称放入 districtStrs
+                    }
+                    dts.add(districtStrs);
 
+                    mDistricts.add(dts);
+                }
 
-                  mDistricts.add(dts);
-               }
-
-               mCities.add(cityStrs); // 组装城市数据
+                mCities.add(cityStrs); // 组装城市数据
 
             }
         }
@@ -175,36 +180,27 @@ public class AddressAddActivity extends BaseActivity {
     }
 
 
-
     @OnClick(R.id.ll_city_picker)
-    public void showCityPickerView(View view){
+    public void showCityPickerView(View view) {
         mCityPikerView.show();
     }
 
 
-    public void createAddress(){
+    public void createAddress() {
+        String json;
+        json = "{\n" +
+                "\"receiverName\":\""+mEditConsignee.getText()+"\",\n" +
+                "\"receiverPhone\":\""+mEditPhone.getText()+"\",\n" +
+                "\"receiverAddress\":\""+mEditAddr.getText()+"\",\n" +
+                "\"receiverZip\":\""+mEditZip.getText()+"\"\n}";
 
-
-        String consignee = mEditConsignee.getText().toString();
-        String phone = mEditPhone.getText().toString();
-        String address = mTxtAddress.getText().toString() + mEditAddr.getText().toString();
-
-
-        Map<String,Object> params = new HashMap<>(1);
-        params.put("user_id", App.getInstance().getUser().getId());
-        params.put("consignee",consignee);
-        params.put("phone",phone);
-        params.put("addr",address);
-        params.put("zip_code","000000");
-
-
-
-        mHttpHelper.post(Contants.API.ADDRESS_CREATE, params, new SpotsCallBack<BaseRespMsg>(this) {
+        mHttpHelper.Post(Contants.API.BASE_URL + "shipping/create", json,App.getInstance().getToken(), new SpotsCallBack<addressCreateBean>(this) {
 
 
             @Override
-            public void onSuccess(Response response, BaseRespMsg baseRespMsg) {
-                if(baseRespMsg.getStatus() == BaseRespMsg.STATUS_SUCCESS){
+            public void onSuccess(Response response, addressCreateBean addressCreateBean) {
+                if (addressCreateBean!=null&&addressCreateBean.getMessage().equals("订单创建成功")) {
+
                     setResult(RESULT_OK);
                     finish();
 
@@ -213,19 +209,16 @@ public class AddressAddActivity extends BaseActivity {
 
             @Override
             public void onError(Response response, int code, Exception e) {
-
+                    ToastUtils.show("收货地址创建失败！");
             }
 
             @Override
             public void onServerError(Response response, int code, String errmsg) {
-
+                ToastUtils.show("收货地址创建失败！服务器出错");
             }
         });
 
     }
-
-
-
 
 
 }

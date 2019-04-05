@@ -12,10 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Response;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +33,6 @@ import pv.com.pvcloudgo.vc.widget.PVToolBar;
 
 public class AddressListActivity extends BaseActivity {
 
-
     @Bind(R.id.toolbar)
      PVToolBar mToolBar;
 
@@ -46,21 +42,7 @@ public class AddressListActivity extends BaseActivity {
     @Bind(R.id.address_add)
     FloatingActionButton addButton;
 
-//    @Bind(R.id.toolbar)
-//    Toolbar toolbar;
-//    @Bind(R.id.toolbar_title)
-//    TextView toolbarTitle;
-//    @Bind(R.id.toolbar_left_logo)
-//    ImageView toolbarLeftLogo;
-//    @Bind(R.id.toolbar_logo)
-//    ImageView toolbarLogo;
-//    @Bind(R.id.toolbar_left_title)
-//    TextView toolbarLeftTitle;
-//    @Bind(R.id.toolbar_right_title)
-//    TextView toolbarRightTitle;
-
      AddressAdapter mAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +60,7 @@ public class AddressListActivity extends BaseActivity {
             public void onClick(View v) {
 
                 toAddActivity();
+
             }
         });
 
@@ -94,18 +77,6 @@ public class AddressListActivity extends BaseActivity {
             }
         });
 
-        mToolBar.setRightButtonOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-//        setupToolbar(toolbar, true);
-//
-//        toolbarTitle.setText("收货地址");
     }
 
 
@@ -201,10 +172,5 @@ public class AddressListActivity extends BaseActivity {
         });
 
     }
-
-
-
-
-
 
 }

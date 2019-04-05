@@ -18,12 +18,6 @@ import pv.com.pvcloudgo.vc.adapter.ShopRecyclerViewAdapter;
 import pv.com.pvcloudgo.vc.view.ui.fragment.dummy.DummyContent;
 import pv.com.pvcloudgo.vc.view.ui.activity.vip.ShopActivity;
 
-//import static com.umeng.socialize.utils.DeviceConfig.context;
-
-
-/**
- * 云会员
- */
 public class VipFragment extends BaseFragment {
 
     @Bind(R.id.list)
