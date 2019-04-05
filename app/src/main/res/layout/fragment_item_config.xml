@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.hq.hsmwan.widget.ItemListView
+    <pv.com.pvcloudgo.vc.widget.ItemListView
         android:id="@+id/lv_config"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
