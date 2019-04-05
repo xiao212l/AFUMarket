@@ -10,7 +10,7 @@
         android:id="@+id/ll_title_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ec0f38"
+        android:background="#1296db"
         android:orientation="vertical">
 
         <LinearLayout
@@ -75,4 +75,31 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white">
+
+        <Button
+
+            android:id="@+id/share_bill"
+            style="@style/bigOrangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="拼单" />
+
+        <Button
+            android:id="@+id/buy_only"
+            style="@style/bigGreyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/share_bill"
+            android:text="单独购买" />
+    </RelativeLayout>
 </LinearLayout>

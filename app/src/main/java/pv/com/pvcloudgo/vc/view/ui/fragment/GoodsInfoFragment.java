@@ -1,6 +1,8 @@
 package pv.com.pvcloudgo.vc.view.ui.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,46 +10,65 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.gxz.PagerSlidingTabStrip;
+import com.squareup.okhttp.Response;
+
+import dmax.dialog.*;
 import pv.com.pvcloudgo.R;
+import pv.com.pvcloudgo.app.App;
+import pv.com.pvcloudgo.http.OkHttpHelper;
+import pv.com.pvcloudgo.http.SpotsCallBack;
+import pv.com.pvcloudgo.model.bean.goodsDetailMessageBean;
+import pv.com.pvcloudgo.utils.Contants;
+import pv.com.pvcloudgo.utils.ToastUtils;
 import pv.com.pvcloudgo.vc.view.ui.activity.other.DetailActivity;
-import pv.com.pvcloudgo.vc.adapter.ItemRecommendAdapter;
 import pv.com.pvcloudgo.vc.adapter.NetworkImageHolderView;
 import pv.com.pvcloudgo.model.bean.RecommendGoodsBean;
 import pv.com.pvcloudgo.vc.widget.SlideDetailsLayout;
 
-import java.math.BigDecimal;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * item页ViewPager里的商品Fragment
  */
 public class GoodsInfoFragment extends Fragment implements View.OnClickListener, SlideDetailsLayout.OnSlideDetailsListener {
+
+//    public static
+
     private PagerSlidingTabStrip psts_tabs;
     private SlideDetailsLayout sv_switch;
     private ScrollView sv_goods_info;
     private FloatingActionButton fab_up_slide;
-    public ConvenientBanner vp_item_goods_img, vp_recommend;
+    public ConvenientBanner vp_item_goods_img;
     private LinearLayout ll_goods_detail, ll_goods_config;
     private TextView tv_goods_detail, tv_goods_config;
     private View v_tab_cursor;
     public FrameLayout fl_content;
     public LinearLayout ll_current_goods, ll_activity, ll_comment, ll_recommend, ll_pull_up;
-    public TextView tv_goods_title, tv_new_price, tv_old_price, tv_current_goods, tv_comment_count, tv_good_comment;
+    public TextView tv_goods_title, tv_new_price, tv_old_price, tv_current_goods, tv_comment_count, tv_good_comment, tv_current_goods_num, numPlus, numMinus;
 
-    /** 当前商品详情数据页的索引分别是图文详情、规格参数 */
+    /**
+     * 当前商品详情数据页的索引分别是图文详情、规格参数
+     */
     private int nowIndex;
     private float fromX;
     public GoodsConfigFragment goodsConfigFragment;
@@ -59,6 +80,15 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
     private FragmentManager fragmentManager;
     public DetailActivity activity;
     private LayoutInflater inflater;
+
+    private View selectView;
+
+    private ListView selectStyle;
+    ArrayAdapter<String> adapter;
+    List<String> styleData;
+    AlertDialog.Builder builder;
+    AlertDialog selectDialog;
+    EditText num;
 
     @Override
     public void onAttach(Context context) {
@@ -102,6 +132,7 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         ll_goods_detail.setOnClickListener(this);
         ll_goods_config.setOnClickListener(this);
         sv_switch.setOnSlideDetailsListener(this);
+
     }
 
     private void initView(View rootView) {
@@ -111,12 +142,10 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         sv_goods_info = (ScrollView) rootView.findViewById(R.id.sv_goods_info);
         v_tab_cursor = rootView.findViewById(R.id.v_tab_cursor);
         vp_item_goods_img = (ConvenientBanner) rootView.findViewById(R.id.vp_item_goods_img);
-        vp_recommend = (ConvenientBanner) rootView.findViewById(R.id.vp_recommend);
         fl_content = (FrameLayout) rootView.findViewById(R.id.fl_content);
         ll_current_goods = (LinearLayout) rootView.findViewById(R.id.ll_current_goods);
         ll_activity = (LinearLayout) rootView.findViewById(R.id.ll_activity);
         ll_comment = (LinearLayout) rootView.findViewById(R.id.ll_comment);
-        ll_recommend = (LinearLayout) rootView.findViewById(R.id.ll_recommend);
         ll_pull_up = (LinearLayout) rootView.findViewById(R.id.ll_pull_up);
         ll_goods_detail = (LinearLayout) rootView.findViewById(R.id.ll_goods_detail);
         ll_goods_config = (LinearLayout) rootView.findViewById(R.id.ll_goods_config);
@@ -128,9 +157,16 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         tv_current_goods = (TextView) rootView.findViewById(R.id.tv_current_goods);
         tv_comment_count = (TextView) rootView.findViewById(R.id.tv_comment_count);
         tv_good_comment = (TextView) rootView.findViewById(R.id.tv_good_comment);
+        tv_current_goods_num = (TextView) rootView.findViewById(R.id.tv_current_goods_num);
+
+        selectView = inflater.inflate(R.layout.select_dialog, null);
+        selectStyle = (ListView) selectView.findViewById(R.id.select_style);
+        numPlus = (TextView) selectView.findViewById(R.id.plus);
+        numPlus = (TextView) selectView.findViewById(R.id.minus);
+        num = (EditText) selectView.findViewById(R.id.num);
+
         setDetailData();
         setLoopView();
-        setRecommendGoods();
 
         //设置文字中间一条横线
         tv_old_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -139,8 +175,10 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
         vp_item_goods_img.setPageIndicator(new int[]{R.mipmap.index_white, R.mipmap.index_red});
         vp_item_goods_img.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-        vp_recommend.setPageIndicator(new int[]{R.drawable.shape_item_index_white, R.drawable.shape_item_index_red});
-        vp_recommend.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+//        vp_recommend.setPageIndicator(new int[]{R.drawable.shape_item_index_white, R.drawable.shape_item_index_red});
+//        vp_recommend.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+
+        getData();
     }
 
     private void initData() {
@@ -148,6 +186,10 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         tabTextList = new ArrayList<>();
         tabTextList.add(tv_goods_detail);
         tabTextList.add(tv_goods_config);
+    }
+
+    public void init() {
+
     }
 
     /**
@@ -165,30 +207,6 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         fragmentManager.beginTransaction().replace(R.id.fl_content, nowFragment).commitAllowingStateLoss();
     }
 
-    /**
-     * 设置推荐商品
-     */
-    public void setRecommendGoods() {
-        List<RecommendGoodsBean> data = new ArrayList<>();
-        data.add(new RecommendGoodsBean("Letv/乐视 LETV体感-超级枪王 乐视TV超级电视产品玩具 体感游戏枪 电玩道具 黑色",
-                "http://img4.hqbcdn.com/product/79/f3/79f3ef1b0b2283def1f01e12f21606d4.jpg", new BigDecimal(599), "799"));
-        data.add(new RecommendGoodsBean("IPEGA/艾派格 幽灵之子 无线蓝牙游戏枪 游戏体感枪 苹果安卓智能游戏手柄 标配",
-                "http://img2.hqbcdn.com/product/00/76/0076cedb0a7d728ec1c8ec149cff0d16.jpg", new BigDecimal(299), "399"));
-        data.add(new RecommendGoodsBean("Letv/乐视 LETV体感-超级枪王 乐视TV超级电视产品玩具 体感游戏枪 电玩道具 黑色",
-                "http://img4.hqbcdn.com/product/79/f3/79f3ef1b0b2283def1f01e12f21606d4.jpg", new BigDecimal(599), "799"));
-        data.add(new RecommendGoodsBean("IPEGA/艾派格 幽灵之子 无线蓝牙游戏枪 游戏体感枪 苹果安卓智能游戏手柄 标配",
-                "http://img2.hqbcdn.com/product/00/76/0076cedb0a7d728ec1c8ec149cff0d16.jpg", new BigDecimal(299), "399"));
-        List<List<RecommendGoodsBean>> handledData = handleRecommendGoods(data);
-        //设置如果只有一组数据时不能滑动
-        vp_recommend.setManualPageable(handledData.size() == 1 ? false : true);
-        vp_recommend.setCanLoop(handledData.size() == 1 ? false : true);
-        vp_recommend.setPages(new CBViewHolderCreator() {
-            @Override
-            public Object createHolder() {
-                return new ItemRecommendAdapter();
-            }
-        }, handledData);
-    }
 
     @Override
     public void onClick(View v) {
@@ -220,6 +238,9 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
                 nowFragment = goodsConfigFragment;
                 break;
 
+
+            case R.id.ll_current_goods:
+                showWindow();
             default:
                 break;
         }
@@ -230,11 +251,11 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
      */
     public void setLoopView() {
         List<String> imgUrls = new ArrayList<>();
-        imgUrls.add("http://img4.hqbcdn.com/product/79/f3/79f3ef1b0b2283def1f01e12f21606d4.jpg");
-        imgUrls.add("http://img14.hqbcdn.com/product/77/6c/776c63e6098f05fdc5639adc96d8d6ea.jpg");
-        imgUrls.add("http://img13.hqbcdn.com/product/41/ca/41cad5139371e4eb1ce095e5f6224f4d.jpg");
-        imgUrls.add("http://img10.hqbcdn.com/product/fa/ab/faab98caca326949b87b770c8080e6cf.jpg");
-        imgUrls.add("http://img2.hqbcdn.com/product/6b/b8/6bb86086397a8cd0525c449f29abfaff.jpg");
+//        imgUrls.add("http://img4.hqbcdn.com/product/79/f3/79f3ef1b0b2283def1f01e12f21606d4.jpg");
+//        imgUrls.add("http://img14.hqbcdn.com/product/77/6c/776c63e6098f05fdc5639adc96d8d6ea.jpg");
+//        imgUrls.add("http://img13.hqbcdn.com/product/41/ca/41cad5139371e4eb1ce095e5f6224f4d.jpg");
+//        imgUrls.add("http://img10.hqbcdn.com/product/fa/ab/faab98caca326949b87b770c8080e6cf.jpg");
+//        imgUrls.add("http://img2.hqbcdn.com/product/6b/b8/6bb86086397a8cd0525c449f29abfaff.jpg");
         //初始化商品图片轮播
         vp_item_goods_img.setPages(new CBViewHolderCreator() {
             @Override
@@ -281,6 +302,7 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
     /**
      * 切换Fragment
      * <p>(hide、show、add)
+     *
      * @param fromFragment
      * @param toFragment
      */
@@ -316,4 +338,152 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
         }
         return handleData;
     }
+
+    public void getData() {
+        OkHttpHelper HttpHelper = new OkHttpHelper();
+        HttpHelper.Get(Contants.API.BASE_URL + "product/1"
+                , App.getInstance().getToken(), new SpotsCallBack<goodsDetailMessageBean>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response response, goodsDetailMessageBean DetailBean) {
+                        if (DetailBean != null && DetailBean.getMessage().equals("请求成功")) {
+                            tv_goods_title.setText(DetailBean.getData().getName() + "\n" + DetailBean.getData().getSubtitle() + "\n" + DetailBean.getData().getDetail());
+                            int price[] = new int[DetailBean.getData().getPurchaseProductSkus().size()];
+                            int spellPrice[] = new int[DetailBean.getData().getPurchaseProductSkus().size()];
+                            int i = 0;
+                            for (goodsDetailMessageBean.goodsDetailBean.PurchaseProductSkusBean style : DetailBean.getData().getPurchaseProductSkus()) {
+                                price[i] = style.getPrice();
+                                spellPrice[i++] = style.getSpellPrice();
+                            }
+                            Arrays.sort(price);
+                            Arrays.sort(spellPrice);
+                            tv_old_price.setText("￥" + price[0] + "-" + price[DetailBean.getData().getPurchaseProductSkus().size() - 1]);
+                            tv_new_price.setText(spellPrice[0] + "-" + spellPrice[DetailBean.getData().getPurchaseProductSkus().size() - 1]);
+
+                        } else {
+                            ToastUtils.show("请求失败");
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        ToastUtils.show("请求失败");
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show("请求失败,服务器无响应");
+                    }
+                });
+        HttpHelper = null;
+
+    }
+
+    public void showWindow() {
+
+
+        OkHttpHelper HttpHelper = new OkHttpHelper();
+        HttpHelper.Get(Contants.API.BASE_URL + "product/1"
+                , App.getInstance().getToken(), new SpotsCallBack<goodsDetailMessageBean>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response response, goodsDetailMessageBean DetailBean) {
+                        if (DetailBean != null && DetailBean.getMessage().equals("请求成功")) {
+                            int i = 0;
+
+                            styleData = new ArrayList<>();
+                            for (goodsDetailMessageBean.goodsDetailBean.PurchaseProductSkusBean style : DetailBean.getData().getPurchaseProductSkus()) {
+                                styleData.add(style.getAttributeName());
+                            }
+
+                            selectView = inflater.inflate(R.layout.select_dialog, null);
+                            selectStyle = (ListView) selectView.findViewById(R.id.select_style);
+                            numPlus = (TextView) selectView.findViewById(R.id.plus);
+                            numMinus = (TextView) selectView.findViewById(R.id.minus);
+                            num = (EditText) selectView.findViewById(R.id.num);
+
+                            if (adapter == null) {
+                                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, styleData) {
+                                    @Override
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View view = super.getView(position, convertView, parent);
+                                        TextView text = (TextView) view.findViewById(android.R.id.text1);
+                                        text.setTextColor(Color.BLACK);
+                                        return view;
+                                    }
+                                };
+
+                            }
+                            selectStyle.setAdapter(adapter);
+
+                            numPlus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int Num = Integer.parseInt(num.getText().toString());
+                                    Num += 1;
+                                    num.setText("" + Num);
+                                }
+                            });
+
+                            numMinus.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int Num = Integer.parseInt(num.getText().toString());
+                                    if (Num != 0) {
+                                        Num -= 1;
+                                    }
+
+
+                                    num.setText("" + Num);
+                                }
+                            });
+
+
+                            selectStyle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    tv_current_goods.setText(DetailBean.getData().getPurchaseProductSkus().get(position).getAttributeName());
+                                    tv_current_goods_num.setText("x" + num.getText());
+                                    selectDialog.dismiss();
+                                }
+                            });
+                            builder = new AlertDialog.Builder(getContext());
+
+                            //通过布局填充器获login_layout
+                            //获取两个文本编辑框（密码这里不做登陆实现，仅演示）
+
+                            builder.setView(selectView);//设置login_layout为对话提示框
+
+//                            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                }
+//                            });
+
+                            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            });
+                            selectDialog = builder.show();
+
+                        } else {
+                            ToastUtils.show("请求失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        ToastUtils.show("请求失败");
+                    }
+
+                    @Override
+                    public void onServerError(Response response, int code, String errmsg) {
+                        ToastUtils.show("请求失败,服务器无响应");
+                    }
+                });
+        HttpHelper = null;
+
+    }
+
 }

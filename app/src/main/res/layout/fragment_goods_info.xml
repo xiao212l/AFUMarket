@@ -62,7 +62,6 @@
                             android:layout_marginRight="22dp"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="Letv/乐视LETV体感-超级枪王 乐视TV超级电视产品玩具体感游戏枪 电玩道具黑色"
                             android:textColor="#222222"
                             android:textSize="15sp" />
 
@@ -89,7 +88,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
-                                android:text="599"
                                 android:textColor="#ec0f38"
                                 android:textSize="21sp"
                                 android:textStyle="bold" />
@@ -100,7 +98,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="7dp"
                                 android:gravity="center_vertical"
-                                android:text="￥799"
                                 android:textColor="#888888"
                                 android:textSize="13sp" />
 
@@ -143,7 +140,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="已选"
+                            android:text="选择型号"
                             android:textColor="#888888"
                             android:textSize="13sp" />
 
@@ -153,8 +150,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="20dp"
+                            android:layout_weight="4"
+                            android:text="请选择"
+                            android:textColor="#222222"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_current_goods_num"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="3dp"
                             android:layout_weight="1"
-                            android:text="黑色, 1件"
                             android:textColor="#222222"
                             android:textSize="14sp" />
 
@@ -275,32 +281,7 @@
                     </LinearLayout>
 
                     <!-- 小二推荐 -->
-                    <LinearLayout
-                        android:id="@+id/ll_recommend"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="#ffffff"
-                        android:orientation="vertical"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="14dp"
-                            android:layout_marginTop="14dp"
-                            android:text="小二推荐"
-                            android:textColor="#222222"
-                            android:textSize="13dp" />
-
-                        <com.bigkoo.convenientbanner.ConvenientBanner xmlns:app="http://schemas.android.com/apk/res-auto"
-                            android:id="@+id/vp_recommend"
-                            android:layout_width="match_parent"
-                            android:layout_height="264dp"
-                            android:background="#ffffff"
-                            app:canLoop="true" />
-                    </LinearLayout>
 
                     <!-- 上拉查看图文详情 -->
                     <LinearLayout

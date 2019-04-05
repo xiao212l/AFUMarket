@@ -110,6 +110,12 @@
         <item name="android:background">@drawable/bg_btn_style_purple</item>
     </style>
 
+    <style name="bigOrangeButton" parent="@style/bigButton">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@drawable/bg_btn_style_orange</item>
+    </style>
+
 
     <style name="customCheckbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/selector_checkbox</item>
