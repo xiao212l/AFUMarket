@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class GoodsInfoFragment extends Fragment implements View.OnClickListener, SlideDetailsLayout.OnSlideDetailsListener {
 
-//    public static
+    public static int selectData[] = {0, 0};
 
     private PagerSlidingTabStrip psts_tabs;
     private SlideDetailsLayout sv_switch;
@@ -359,6 +359,7 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
                             tv_old_price.setText("￥" + price[0] + "-" + price[DetailBean.getData().getPurchaseProductSkus().size() - 1]);
                             tv_new_price.setText(spellPrice[0] + "-" + spellPrice[DetailBean.getData().getPurchaseProductSkus().size() - 1]);
 
+
                         } else {
                             ToastUtils.show("请求失败");
                         }
@@ -441,9 +442,14 @@ public class GoodsInfoFragment extends Fragment implements View.OnClickListener,
                             selectStyle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                                     tv_current_goods.setText(DetailBean.getData().getPurchaseProductSkus().get(position).getAttributeName());
                                     tv_current_goods_num.setText("x" + num.getText());
                                     selectDialog.dismiss();
+
+                                    selectData[0] = DetailBean.getData().getPurchaseProductSkus().get(position).getId();
+                                    selectData[1] = Integer.parseInt(num.getText().toString());
+
                                 }
                             });
                             builder = new AlertDialog.Builder(getContext());

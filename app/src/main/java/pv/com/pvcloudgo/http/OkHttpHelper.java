@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okio.BufferedSink;
 import pv.com.pvcloudgo.utils.Contants;
 import pv.com.pvcloudgo.vc.view.ui.activity.start.LoginActivity;
 import pv.com.pvcloudgo.app.App;
@@ -107,6 +108,24 @@ public class OkHttpHelper {
         request(request, callback);
     }
 
+    public void Post(String url, String Token, BaseCallback callback) {
+
+        Request.Builder builder = new Request.Builder()
+                .url(url);
+        builder.post(new RequestBody() {
+            @Override
+            public MediaType contentType() {
+                return null;
+            }
+
+            @Override
+            public void writeTo(BufferedSink sink) throws IOException {
+
+            }
+        });
+        Request request = builder.addHeader("Authorization", "Bearer " + Token).build();
+        request(request, callback);
+    }
 
 
     public void post(String url, Map<String, Object> param, BaseCallback callback) {

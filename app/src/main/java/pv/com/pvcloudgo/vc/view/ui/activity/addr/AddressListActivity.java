@@ -33,6 +33,10 @@ import pv.com.pvcloudgo.vc.widget.PVToolBar;
 
 public class AddressListActivity extends BaseActivity {
 
+
+    //    public static int id;
+    public static addressBean addr;
+
     @Bind(R.id.toolbar)
      PVToolBar mToolBar;
 
@@ -63,7 +67,6 @@ public class AddressListActivity extends BaseActivity {
 
             }
         });
-
 
     }
 
@@ -124,9 +127,7 @@ public class AddressListActivity extends BaseActivity {
             mAdapter = new AddressAdapter(this, addresses, new AddressAdapter.AddressLisneter() {
                 @Override
                 public void setDefault(addressBean address) {
-
-                    updateAddress(address);
-
+//                    updateAddress(address);
                 }
 
                 @Override
@@ -147,30 +148,30 @@ public class AddressListActivity extends BaseActivity {
     }
 
 
-    public void updateAddress(addressBean address){
-
-
-        mHttpHelper.get(Contants.API.ADDRESS_UPDATE,  new SpotsCallBack<BaseRespMsg>(this) {
-
-            @Override
-            public void onSuccess(Response response, BaseRespMsg baseRespMsg) {
-                if(baseRespMsg.getStatus() == BaseRespMsg.STATUS_SUCCESS){
-
-                    initAddress();
-                }
-            }
-
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
-
-            @Override
-            public void onServerError(Response response, int code, String errmsg) {
-                ToastUtils.show(errmsg);
-            }
-        });
-
-    }
+//    public void updateAddress(addressBean address){
+//
+//
+//        mHttpHelper.get(Contants.API.ADDRESS_UPDATE,  new SpotsCallBack<BaseRespMsg>(this) {
+//
+//            @Override
+//            public void onSuccess(Response response, BaseRespMsg baseRespMsg) {
+//                if(baseRespMsg.getStatus() == BaseRespMsg.STATUS_SUCCESS){
+//
+//                    initAddress();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Response response, int code, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onServerError(Response response, int code, String errmsg) {
+//                ToastUtils.show(errmsg);
+//            }
+//        });
+//
+//    }
 
 }

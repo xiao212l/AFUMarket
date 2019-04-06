@@ -134,7 +134,7 @@
                         android:textSize="16sp" />
                     <Button
                         android:id="@+id/update_date_button"
-                        style="@style/Widget.AppCompat.Button.Colored"
+                        style="@style/bigGreenButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/middlePadding"
@@ -236,7 +236,7 @@
 
             <Button
                 android:id="@+id/ensure"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/bigGreenButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/largePadding"

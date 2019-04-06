@@ -3,11 +3,14 @@ package pv.com.pvcloudgo.vc.view.ui.activity.order;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,26 +25,27 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pv.com.pvcloudgo.app.App;
+import pv.com.pvcloudgo.model.bean.payMessageBean;
+import pv.com.pvcloudgo.utils.ToastUtils;
+import pv.com.pvcloudgo.vc.view.ui.activity.addr.AddressListActivity;
 import pv.com.pvcloudgo.vc.view.ui.activity.other.PayResultActivity;
 import pv.com.pvcloudgo.R;
 import pv.com.pvcloudgo.vc.adapter.WareOrderAdapter;
-import pv.com.pvcloudgo.vc.adapter.layoutmanager.FullyLinearLayoutManager;
-import pv.com.pvcloudgo.model.bean.Charge;
-import pv.com.pvcloudgo.model.bean.ShoppingCart;
 import pv.com.pvcloudgo.http.SpotsCallBack;
 import pv.com.pvcloudgo.model.base.BaseRespMsg;
-import pv.com.pvcloudgo.model.msg.CreateOrderRespMsg;
 import pv.com.pvcloudgo.utils.CartProvider;
 import pv.com.pvcloudgo.utils.Contants;
-import pv.com.pvcloudgo.utils.JSONUtil;
 import pv.com.pvcloudgo.vc.base.BaseActivity;
+
+import static pv.com.pvcloudgo.vc.adapter.CartRecyclerViewAdapter.CartItem;
 
 
 public class CreateOrderActivity extends BaseActivity implements View.OnClickListener {
 
 
-
-
+    int type;
+    List<String> cartData;
     /**
      * 银联支付渠道
      */
@@ -65,36 +69,45 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     @Bind(R.id.txt_order)
-     TextView txtOrder;
+    TextView txtOrder;
 
-    @Bind(R.id.recycler_view)
-     RecyclerView mRecyclerView;
+    @Bind(R.id.cart_list)
+    ListView mListView;
 
 
     @Bind(R.id.rl_alipay)
-     RelativeLayout mLayoutAlipay;
+    RelativeLayout mLayoutAlipay;
 
     @Bind(R.id.rl_wechat)
-     RelativeLayout mLayoutWechat;
+    RelativeLayout mLayoutWechat;
 
     @Bind(R.id.rl_bd)
-     RelativeLayout mLayoutBd;
+    RelativeLayout mLayoutBd;
 
 
     @Bind(R.id.rb_alipay)
-     RadioButton mRbAlipay;
+    RadioButton mRbAlipay;
 
     @Bind(R.id.rb_webchat)
-     RadioButton mRbWechat;
+    RadioButton mRbWechat;
 
     @Bind(R.id.rb_bd)
-     RadioButton mRbBd;
+    RadioButton mRbBd;
 
     @Bind(R.id.btn_createOrder)
-     Button mBtnCreateOrder;
+    Button mBtnCreateOrder;
 
     @Bind(R.id.txt_total)
-     TextView mTxtTotal;
+    TextView mTxtTotal;
+
+    @Bind(R.id.order_name)
+    TextView mName;
+
+    @Bind(R.id.order_addr)
+    TextView mAddr;
+
+    @Bind(R.id.select_addr)
+    LinearLayout selectAddr;
 
 
     private CartProvider cartProvider;
@@ -103,54 +116,80 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
 
     private String orderNum;
     private String payChannel = CHANNEL_ALIPAY;
-    private float amount;
+    private float amount = 0;
 
 
-    private HashMap<String,RadioButton> channels = new HashMap<>(3);
+    private HashMap<String, RadioButton> channels = new HashMap<>(3);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        cartData = new ArrayList<>();
+        Intent intent = getIntent();
+        type = intent.getIntExtra("position", 0);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_order);
         ButterKnife.bind(this);
 
+        init();
+
         showData();
 
-        init();
 
     }
 
 
-    private void init(){
+    private void init() {
 
-
-
-        channels.put(CHANNEL_ALIPAY,mRbAlipay);
-        channels.put(CHANNEL_WECHAT,mRbWechat);
-        channels.put(CHANNEL_BFB,mRbBd);
+        channels.put(CHANNEL_ALIPAY, mRbAlipay);
+        channels.put(CHANNEL_WECHAT, mRbWechat);
+        channels.put(CHANNEL_BFB, mRbBd);
 
         mLayoutAlipay.setOnClickListener(this);
         mLayoutWechat.setOnClickListener(this);
         mLayoutBd.setOnClickListener(this);
 
 
+        for (int i = 0; i < CartItem.checkgroup.length; i++) {
+            if (CartItem.checkgroup[i].isChecked()) {
+                amount += CartItem.cartItem[i].getPrice() * CartItem.cartItem[i].getCount();
+                cartData.add(CartItem.cartItem[i].getName() + "     x" + CartItem.cartItem[i].getCount());
+            }
 
-        amount = mAdapter.getTotalPrice();
-        mTxtTotal.setText("应付款： ￥"+amount);
+        }
+        mTxtTotal.setText("应付款： ￥" + amount);
+
     }
 
 
+    public void showData() {
 
-    public void showData(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_activated_1, cartData) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup
+                    parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.BLACK);
+                return view;
+            }
+        };
 
-        cartProvider = new CartProvider(this);
-        mAdapter = new WareOrderAdapter(this,cartProvider.getAll());
+        mListView.setAdapter(adapter);
 
-        FullyLinearLayoutManager layoutManager = new FullyLinearLayoutManager(this);
-        layoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        mRecyclerView.setAdapter(mAdapter);
+//调整listview高度避免与scollview发生冲突
+        int totalHeight = 0;
+        for (int i = 0; i < adapter.getCount(); i++) {
+            View listItem = adapter.getView(i, null, mListView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = mListView.getLayoutParams();
+        params.height = totalHeight + (mListView.getDividerHeight() * (adapter.getCount() - 1));
+        params.height += 5;
+        mListView.setLayoutParams(params);
+//
 
     }
 
@@ -162,20 +201,19 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    public void selectPayChannle(String paychannel){
+    public void selectPayChannle(String paychannel) {
 
 
-        for (Map.Entry<String,RadioButton> entry:channels.entrySet()){
+        for (Map.Entry<String, RadioButton> entry : channels.entrySet()) {
 
             payChannel = paychannel;
             RadioButton rb = entry.getValue();
-            if(entry.getKey().equals(paychannel)){
+            if (entry.getKey().equals(paychannel)) {
 
                 boolean isCheck = rb.isChecked();
                 rb.setChecked(!isCheck);
 
-            }
-            else
+            } else
                 rb.setChecked(false);
         }
 
@@ -184,50 +222,45 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     @OnClick(R.id.btn_createOrder)
-    public void createNewOrder(View view){
+    public void createNewOrder(View view) {
 
         postNewOrder();
     }
 
+    @OnClick(R.id.select_addr)
+    public void selectOrder(View view) {
 
-    private void postNewOrder(){
+        next(AddressListActivity.class, 1);
+
+    }
 
 
-        final List<ShoppingCart> carts = mAdapter.getDatas();
+    private void postNewOrder() {
+        int skuId = 0;
+        int count = 0;
+        int shoppingId = 0;
 
-        List<WareItem> items = new ArrayList<>(carts.size());
-        for (ShoppingCart c:carts ) {
-
-            WareItem item = new WareItem(c.getId(),c.getPrice().intValue());
-            items.add(item);
+        for (int i = 0; i < CartItem.checkgroup.length; i++) {
+            if (CartItem.checkgroup[i].isChecked()) {
+                skuId = CartItem.cartItem[i].getSkuId();
+                count = CartItem.cartItem[i].getCount();
+                shoppingId = AddressListActivity.addr.getId();
+            }
 
         }
 
-        String item_json = JSONUtil.toJSON(items);
-
-        Map<String,Object> params = new HashMap<>(5);
-        params.put("user_id","");
-        params.put("item_json",item_json);
-        params.put("pay_channel",payChannel);
-        params.put("amount",(int)amount+"");
-        params.put("addr_id",1+"");
-
-
-        mBtnCreateOrder.setEnabled(false);
-
-        mHttpHelper.post(Contants.API.ORDER_CREATE, params, new SpotsCallBack<CreateOrderRespMsg>(this) {
+        mHttpHelper.Post(Contants.API.BASE_URL + "order/place/separate/" + skuId + "/" + count + "/" + shoppingId, App.getInstance().getToken(), new SpotsCallBack<payMessageBean>(this) {
             @Override
-            public void onSuccess(Response response, CreateOrderRespMsg respMsg) {
+            public void onSuccess(Response response, payMessageBean payMessageBean) {
+                if (payMessageBean != null && payMessageBean.getMessage().equals("下单成功")) {
 
 
-//                cartProvider.
+                    ToastUtils.show(payMessageBean.getMessage());
+                    finish();
 
-                mBtnCreateOrder.setEnabled(true);
-                orderNum = respMsg.getData().getOrderNum();
-                Charge charge = respMsg.getData().getCharge();
-
-                openPaymentActivity(JSONUtil.toJSON(charge));
-
+                } else {
+                    ToastUtils.show("请求失败");
+                }
             }
 
             @Override
@@ -242,11 +275,10 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
         });
 
 
-
     }
 
 
-    private void openPaymentActivity(String charge){
+    private void openPaymentActivity(String charge) {
 
         Intent intent = new Intent();
         String packageName = getPackageName();
@@ -268,33 +300,26 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
                     changeOrderStatus(1);
                 else if (result.equals("fail"))
                     changeOrderStatus(-1);
-                 else if (result.equals("cancel"))
+                else if (result.equals("cancel"))
                     changeOrderStatus(-2);
-                 else
+                else
                     changeOrderStatus(0);
 
-            /* 处理返回值
-             * "success" - payment succeed
-             * "fail"    - payment failed
-             * "cancel"  - user canceld
-             * "invalid" - payment plugin not installed
-             *
-             * 如果是银联渠道返回 invalid，调用 UPPayAssistEx.installUPPayPlugin(this); 安装银联安全支付控件。
-             */
-//                String errorMsg = data.getExtras().getString("error_msg"); // 错误信息
-//                String extraMsg = data.getExtras().getString("extra_msg"); // 错误信息
-
             }
+        } else if (requestCode == Contants.REQUEST_CODE) {
+            mName.setText(AddressListActivity.addr.getReceiverName() + "(" + AddressListActivity.addr.getReceiverPhone() + ")");
+            mAddr.setText(AddressListActivity.addr.getReceiverAddress());
         }
+
+
     }
 
 
+    private void changeOrderStatus(final int status) {
 
-    private void changeOrderStatus(final int status){
-
-        Map<String,Object> params = new HashMap<>(5);
-        params.put("order_num",orderNum);
-        params.put("status",status+"");
+        Map<String, Object> params = new HashMap<>(5);
+        params.put("order_num", orderNum);
+        params.put("status", status + "");
 
 
         mHttpHelper.post(Contants.API.ORDER_COMPLEPE, params, new SpotsCallBack<BaseRespMsg>(this) {
@@ -318,10 +343,10 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
 
-    private void toPayResultActivity(int status){
+    private void toPayResultActivity(int status) {
 
-        Intent intent = new Intent(this,PayResultActivity.class);
-        intent.putExtra("status",status);
+        Intent intent = new Intent(this, PayResultActivity.class);
+        intent.putExtra("status", status);
 
         startActivity(intent);
         this.finish();
@@ -330,8 +355,8 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     class WareItem {
-        private  Long ware_id;
-        private  int amount;
+        private Long ware_id;
+        private int amount;
 
         public WareItem(Long ware_id, int amount) {
             this.ware_id = ware_id;
@@ -353,7 +378,16 @@ public class CreateOrderActivity extends BaseActivity implements View.OnClickLis
         public void setAmount(int amount) {
             this.amount = amount;
         }
+
     }
 
+    public void next(Class cls, int data) {
 
+
+        Intent intent = new Intent(CreateOrderActivity.this, cls);
+        intent.putExtra("position", data);
+
+        startActivityForResult(intent, true, Contants.REQUEST_CODE);
+
+    }
 }

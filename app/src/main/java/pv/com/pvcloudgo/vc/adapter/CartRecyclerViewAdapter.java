@@ -26,13 +26,13 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     private List<CartBean.DataBean.CartItemsBean> goodlist;
     private final Context context;
     private int type = 0;//0:LinearViewHolder  1:GridViewHolder
-    public static CheckBox checkgroup[];
+    public static cartBindItem CartItem = new cartBindItem();
 
     public CartRecyclerViewAdapter(Context context, List<CartBean.DataBean.CartItemsBean> goodlist) {
         this.context = context;
         this.goodlist = goodlist;
-        checkgroup = new CheckBox[this.getItemCount()];
-
+        CartItem.checkgroup = new CheckBox[this.getItemCount()];
+        CartItem.cartItem = new CartBean.DataBean.CartItemsBean[this.getItemCount()];
     }
 
     public void setType(int type) {
@@ -63,8 +63,8 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             linearViewHolder.Totalprice.setText("￥"+goodlist.get(position).getTotalPrice());
             linearViewHolder.Count.setText("x" + goodlist.get(position).getCount());
 //            Glide.with(context).load(goodlist.get(position).getMainImage()).into(linearViewHolder.iv);
-            checkgroup[position] = linearViewHolder.Check;
-
+            CartItem.checkgroup[position] = linearViewHolder.Check;
+            CartItem.cartItem[position] = goodlist.get(position);
         }
 
 
@@ -107,6 +107,14 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         }
     }
+
+
+    public static class cartBindItem {
+        public CheckBox checkgroup[];
+        public CartBean.DataBean.CartItemsBean cartItem[];
+
+    }
+
 
 
 }

@@ -250,7 +250,7 @@
 
             <Button
                 android:id="@+id/user_update"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/bigGreenButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/largePadding"

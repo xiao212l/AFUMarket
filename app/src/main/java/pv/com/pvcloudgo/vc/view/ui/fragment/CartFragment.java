@@ -33,7 +33,7 @@ import pv.com.pvcloudgo.vc.adapter.ShopCartAdapter;
 import pv.com.pvcloudgo.model.bean.ShoppingCart;
 import pv.com.pvcloudgo.utils.CartProvider;
 
-import static pv.com.pvcloudgo.vc.adapter.CartRecyclerViewAdapter.checkgroup;
+import static pv.com.pvcloudgo.vc.adapter.CartRecyclerViewAdapter.CartItem;
 
 public class CartFragment extends BaseFragment implements View.OnClickListener {
 
@@ -85,12 +85,12 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 CheckBox V = (CheckBox) v;
-                if(V.isChecked()){
-                    for(CheckBox check:checkgroup){
+                if (V.isChecked()) {
+                    for (CheckBox check : CartItem.checkgroup) {
                         check.setChecked(true);
                     }
-                }else{
-                    for(CheckBox check:checkgroup){
+                } else {
+                    for (CheckBox check : CartItem.checkgroup) {
                         check.setChecked(false);
                     }
                 }
@@ -106,12 +106,22 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
 
     @OnClick(R.id.btn_order)
     public void toOrder(View view) {
+        boolean isSelected = false;
+        for (CheckBox check : CartItem.checkgroup) {
+            if (check.isChecked()) {
+                isSelected = true;
+            }
+        }
+        if (isSelected) {
+            Intent intent = new Intent(getActivity(), CreateOrderActivity.class);
+            intent.putExtra("type", 1);
+            startActivity(intent, true);
+        } else {
+            ToastUtils.show("请选择至少一项商品");
+        }
 
-        Intent intent = new Intent(getActivity(), CreateOrderActivity.class);
 
-        startActivity(intent, true);
     }
-
 
 
     public void refData() {
@@ -126,7 +136,7 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
                     public void onSuccess(Response response, CartBean CartBean) {
                         if (CartBean != null && CartBean.getMessage().equals("请求成功")) {
 
-                            adapter = new CartRecyclerViewAdapter(this.mContext , CartBean.getData().getCartItems());
+                            adapter = new CartRecyclerViewAdapter(this.mContext, CartBean.getData().getCartItems());
                             recyclerView.setAdapter(adapter);
 
                         } else {
@@ -145,7 +155,6 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
                         ToastUtils.show("请求失败,服务器无响应");
                     }
                 });
-
 
 
     }
@@ -170,14 +179,14 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         TextView V = (TextView) v;
-        if(mBtnDel.getVisibility()==View.INVISIBLE){
+        if (mBtnDel.getVisibility() == View.INVISIBLE) {
             mBtnDel.setVisibility(View.VISIBLE);
             V.setText("完成");
-        }else{
+        } else {
             mBtnDel.setVisibility(View.INVISIBLE);
             V.setText("编辑");
             mCheckBox.setChecked(false);
-            for(CheckBox check:checkgroup){
+            for (CheckBox check : CartItem.checkgroup) {
                 check.setChecked(false);
             }
         }
@@ -213,10 +222,20 @@ public class CartFragment extends BaseFragment implements View.OnClickListener {
         super.onHiddenChanged(hidden);
         if (hidden) {   // 不在最前端显示 相当于调用了onPause();
             return;
-        }else{  // 在最前端显示 相当于调用了onResume();
+        } else {  // 在最前端显示 相当于调用了onResume();
             refData();
         }
     }
 
+
+    public void next(Class cls, int data) {
+
+
+        Intent intent = new Intent(getActivity(), cls);
+        intent.putExtra("position", data);
+
+        startActivityForResult(intent, true, Contants.REQUEST_CODE);
+
+    }
 
 }
